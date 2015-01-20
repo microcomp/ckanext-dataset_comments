@@ -1,0 +1,40 @@
+{% ckan_extends %}
+
+
+{% block primary_content_inner %}
+  {{ super() }}
+  <link href='/comments.css' type="text/css" rel='stylesheet'>
+  <h2>{{_('Comments')}}:</h2>
+  
+
+<div class="comments_1st">
+    <div class="comment" id="comment_id">
+        <h3>username</h3><p class="date"> 2001.9.11</p>
+        <p class="comment_text">
+            lorem ipsum...
+            <ul>
+                <li><a href="#comment_id" class="reply"><i class='fa fa-reply'></i> {{_('reply')}}</a></li>
+                <li><a href="#comment_id" class="delete"><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
+            <ul>
+            <div class="comments_2nd">
+                <div class="comment" id="comment_id">
+                    <h3>username</h3><p class="date"> 2001.9.11</p>
+                    <p class="comment_text">
+                        lorem ipsum...
+                    <ul>
+                        <li><a href="#comment_id" class="delete"><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
+                    <ul>
+                    </p>
+                </div>
+            </div>
+        </p>
+    </div>
+</div>
+
+
+  
+{% endblock %}
+
+{% block secondary_content %}
+  {{ super() }}
+{% endblock %}
