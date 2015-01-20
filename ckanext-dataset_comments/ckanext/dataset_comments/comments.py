@@ -12,6 +12,7 @@ import ckan.plugins as p
 from ckan.common import _, c
 import ckan.plugins.toolkit as toolkit
 
+import comments_db
 import logging
 import ckan.logic
 import __builtin__
@@ -19,3 +20,12 @@ import __builtin__
 
 class CommentsController(base.BaseController):
 	pass
+	def DeleteComment(self):
+		'''TODO'''
+		pass
+	def NewComment(self):
+		'''TODO'''
+		pass
+	def ListComments(self):
+		'''TODO'''
+		pass
