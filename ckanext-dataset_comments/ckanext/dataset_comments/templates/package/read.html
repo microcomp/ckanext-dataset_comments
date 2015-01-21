@@ -5,33 +5,87 @@
   {{ super() }}
   <link href='/comments.css' type="text/css" rel='stylesheet'>
   <h2>{{_('Comments')}}:</h2>
-  
+{% for i in h.list(c.current_package_id) %}
+{%if i.pub == 'private' %}
 
-<div class="comments_1st">
-    <div class="comment" id="comment_id">
-        <h3>username</h3><p class="date"> 2001.9.11</p>
-        <p class="comment_text">
-            lorem ipsum...
+<div class="comments_1st" style="background-color:#D1D1D1;">
+    <div class="comment" id="comment_id"  >
+        <h3 style="color:#858585;">{{h.username(i.user_id)}}</h3><p class="date" style="color:#858585;"> {{i.date}}</p>
+
+        <p class="comment_text" style="color:#858585;">
+            {{i.comment_text}}
             <ul>
-                <li><a href="#comment_id" class="reply"><i class='fa fa-reply'></i> {{_('reply')}}</a></li>
-                <li><a href="#comment_id" class="delete"><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
+                <li><a href="#comment_id" class="reply" onclick="alert('we are working hard to fix this');" style="color:#858585;"><i class='fa fa-reply'></i> {{_('reply')}}</a></li>
+                {#% if c.hasprivileg %#}
+                <li style="color:#858585;"><a href="/dataset/comments/delete?id={{i.id}}" class="delete" style="color:#858585;"><i class='fa fa-remove'></i> {{_('show')}}</a></li>
+                {#%endif%#}
             <ul>
-            <div class="comments_2nd">
+            <!--div class="comments_2nd">
                 <div class="comment" id="comment_id">
                     <h3>username</h3><p class="date"> 2001.9.11</p>
                     <p class="comment_text">
                         lorem ipsum...
                     <ul>
-                        <li><a href="#comment_id" class="delete"><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
+                        <li><a href="#comment_id" class="delete"  onclick="alert('we are working hard to fix this');"><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
                     <ul>
                     </p>
                 </div>
-            </div>
+            </div-->
         </p>
     </div>
 </div>
 
+{#
+{%endif%}{%if c.hasprivileg == False%}
+TODO:
+-privilegs for editing...
+#}
+{% elif i.pub == 'public'%}
+<div class="comments_1st">
+    <div class="comment" id="comment_id"  >
+        <h3>{{h.username(i.user_id)}}</h3><p class="date"> {{i.date}}</p>
 
+        <p class="comment_text">
+            {{i.comment_text}}
+            <ul>
+                <li><a href="#comment_id" class="reply" onclick="alert('we are working hard to fix this');"><i class='fa fa-reply'></i> {{_('reply')}}</a></li>
+                {#% if c.hasprivileg %#}
+                <li><a href="/dataset/comments/delete?id={{i.id}}" class="delete" ><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
+                {#%endif%#}
+            <ul>
+            <!--div class="comments_2nd">
+                <div class="comment" id="comment_id">
+                    <h3>username</h3><p class="date"> 2001.9.11</p>
+                    <p class="comment_text">
+                        lorem ipsum...
+                    <ul>
+                        <li><a href="#comment_id" class="delete"  onclick="alert('we are working hard to fix this');"><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
+                    <ul>
+                    </p>
+                </div>
+            </div-->
+        </p>
+    </div>
+</div>
+{%endif%}
+{%endfor%}
+
+<!-- form -->
+
+<form class="form-horizontal" method="post" action="/dataset/{{c.current_package_id}}/comments/new">
+<legend>{{ _('New comment') }}</legend>
+
+  <div class="controls" style="margin-left:0px;">                     
+    <textarea id="textarea" name="comment_text" style="resize: vertical;width: 100%;"> {{ _('New comment') }}...</textarea>
+  </div>
+
+  <div class="controls" style="margin-left:0px;">
+    <button id="submit" name="submit" class="btn btn-default">{{_('Post comment')}}</button>
+    <textarea id="textarea" name="dataset_id" style="display:none;">{{c.current_package_id}}</textarea>
+  </div>
+</form>
+
+<!-- end form -->
   
 {% endblock %}
 

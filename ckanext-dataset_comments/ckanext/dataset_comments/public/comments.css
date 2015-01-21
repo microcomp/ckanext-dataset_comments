@@ -5,6 +5,10 @@
     padding: 1em;
     padding-top: 0px;
     background-color: #ededed;
+    margin-bottom: 2px;
+}
+#private{
+    color: red;
 }
 .comments_2nd{
     width: 95%;
