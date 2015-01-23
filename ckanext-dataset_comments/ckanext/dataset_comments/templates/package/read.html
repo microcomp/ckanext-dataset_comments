@@ -55,14 +55,14 @@ function show_form(id){
             {% for j in h.list_children(c.current_package_id, i.id) %}
                 <div {% if j.pub != 'private' %}class="comments_2nd" {%else%}class="comments_2nd_priv" {%endif%}>
                 <div class="comment" id="comment_id">
-                    <h3>{{h.username(j.user_id)}}</h3><p class="date"> {{j.date}}</p>
-                    <p class="comment_text">
+                    <h3 {% if j.pub == 'private' %}style="color:#858585;" {%endif%}>{{h.username(j.user_id)}}</h3><p class="date" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}> {{j.date}}</p>
+                    <p class="comment_text" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}>
                         {{j.comment_text}}
                         
                     <ul>{% if j.pub != 'private' %}
                         <li><a href="/dataset/comments/delete?id={{j.id}}" class="delete" ><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
                         {%else%}
-                        <li><a href="/dataset/comments/delete?id={{j.id}}" class="delete" ><i class='fa fa-remove'></i> {{_('show')}}</a></li>
+                        <li><a href="/dataset/comments/delete?id={{j.id}}" class="delete" style="color:#858585;"><i class='fa fa-remove'></i> {{_('show')}}</a></li>
                         {%endif%}
                     <ul>
 
