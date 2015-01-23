@@ -9,7 +9,8 @@ import ckan.lib.base as base
 import ckan.lib.helpers as h
 import ckan.lib.navl.dictization_functions as df
 import ckan.plugins as p
-from ckan.common import _, c
+from ckan.common import _, c, g
+#import ckan.lib.app_globals.Globals as g
 import ckan.plugins.toolkit as toolkit
 
 import time
@@ -18,6 +19,8 @@ import comments_db
 import logging
 import ckan.logic
 import __builtin__
+
+_check_access = logic.check_access
 
 def create_dataset_comments_table(context):
     if comments_db.dataset_comments_table is None:
@@ -74,10 +77,24 @@ class CommentsController(base.BaseController):
         date = time.strftime("%Y/%m/%d %H:%m:%S")  
         text = c.post_data['comment_text']
         dataset_id = c.post_data['dataset_id']
+
+        g.comment_errors = []
+
+        if c.userobj.id == '' or c.userobj.id == None:
+            base.redirect_to(controller='user', action='login')
+        text = " ".join(text.split())
+
+        if len(text) < 5:
+            base.redirect_to(controller='package', action='read', id=dataset_id, error='too_short')
+        parent = base.request.params.get('parent_id','') 
+
+        if parent == "":
+            parent = None   
+
         data_dict = {'id': id, 'user_id':c.userobj.id, 
         			'date': date, 'pub': 'public', 
         			'dataset_id': dataset_id,
-        			'comment_text': text, 'parent': None}
+        			'comment_text': text, 'parent': parent}
         logging.warning(c.post_data)
         new_comment(context, data_dict)
         model.Session.commit()
@@ -100,21 +117,40 @@ def ListComments(id):
                'for_view': True}
     data_dict = {'dataset_id':  id, 'parent': ''}
     comments = get_comments(context, data_dict)
-    ''''c.hasprivileg = 'True'
+    
+    c.hasprivileg = 'True'
 
+    
+    '''
+    context2 = {'user' : c.user}
     try:
-        logic.check_access('app_edit', context, data_dict)
+        logic.check_access('app_create', context2)
     except logic.NotAuthorized:
    		c.hasprivileg = 'False'
 	'''
     comments = sorted(comments, key=lambda comments: comments.date)
-    return comments
+    comments2 = []
+    for i in comments:
+        if i.pub == 'public':
+            comments2.append(i)
+
+    if c.hasprivileg:
+        return comments
+    else:
+        return comments2
 
 def GetUsername(user_id):
     username = model.Session.query(model.User) \
                 .filter(model.User.id == user_id).first()
     return username.name
-
+def ListChildren(id, comment_id):
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    data_dict = {'dataset_id':  id, 'parent': comment_id}
+    comments = get_comments(context, data_dict)
+    comments = sorted(comments, key=lambda comments: comments.date)
+    return comments
 '''
 TODO:
 -reply

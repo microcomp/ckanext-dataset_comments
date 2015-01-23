@@ -18,6 +18,15 @@
     padding-top: 0.1em;
     background-color: #ffffff;
 }
+.comments_2nd_priv{
+    width: 95%;
+
+    border-radius: 7px;
+    padding: 1em;
+    padding-top: 0.1em;
+    background-color: #D1D1D1;
+    color: #e1e1e1;
+}
 #comment_id > h3{
     color: #bd0a26;
     padding-right: 0px;

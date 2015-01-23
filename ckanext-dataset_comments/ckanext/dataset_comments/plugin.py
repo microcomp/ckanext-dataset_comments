@@ -26,4 +26,5 @@ class DatasetCommentsPlugin(plugins.SingletonPlugin):
         toolkit.add_public_directory(config, 'public')
     def get_helpers(self):
         return {'list': comments.ListComments,
-                'username': comments.GetUsername }
+                'username': comments.GetUsername,
+                'list_children': comments.ListChildren }

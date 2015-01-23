@@ -15,22 +15,11 @@
         <p class="comment_text" style="color:#858585;">
             {{i.comment_text}}
             <ul>
-                <li><a href="#comment_id" class="reply" onclick="alert('we are working hard to fix this');" style="color:#858585;"><i class='fa fa-reply'></i> {{_('reply')}}</a></li>
-                {#% if c.hasprivileg %#}
                 <li style="color:#858585;"><a href="/dataset/comments/delete?id={{i.id}}" class="delete" style="color:#858585;"><i class='fa fa-remove'></i> {{_('show')}}</a></li>
-                {#%endif%#}
+
             <ul>
-            <!--div class="comments_2nd">
-                <div class="comment" id="comment_id">
-                    <h3>username</h3><p class="date"> 2001.9.11</p>
-                    <p class="comment_text">
-                        lorem ipsum...
-                    <ul>
-                        <li><a href="#comment_id" class="delete"  onclick="alert('we are working hard to fix this');"><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
-                    <ul>
-                    </p>
-                </div>
-            </div-->
+
+            
         </p>
     </div>
 </div>
@@ -40,7 +29,16 @@
 TODO:
 -privilegs for editing...
 #}
+
+
 {% elif i.pub == 'public'%}
+<script type="text/javascript">
+function show_form(id){
+    var form = document.getElementById(id)
+    form.hidden = false;
+
+}
+</script>
 <div class="comments_1st">
     <div class="comment" id="comment_id"  >
         <h3>{{h.username(i.user_id)}}</h3><p class="date"> {{i.date}}</p>
@@ -48,11 +46,61 @@ TODO:
         <p class="comment_text">
             {{i.comment_text}}
             <ul>
-                <li><a href="#comment_id" class="reply" onclick="alert('we are working hard to fix this');"><i class='fa fa-reply'></i> {{_('reply')}}</a></li>
+                <li><a href="#comment_id" class="reply" onclick='show_form("{{i.id}}");' ><i class='fa fa-reply' ></i> {{_('reply')}}</a></li>
                 {#% if c.hasprivileg %#}
                 <li><a href="/dataset/comments/delete?id={{i.id}}" class="delete" ><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
                 {#%endif%#}
             <ul>
+
+            {% for j in h.list_children(c.current_package_id, i.id) %}
+                <div {% if j.pub != 'private' %}class="comments_2nd" {%else%}class="comments_2nd_priv" {%endif%}>
+                <div class="comment" id="comment_id">
+                    <h3>{{h.username(j.user_id)}}</h3><p class="date"> {{j.date}}</p>
+                    <p class="comment_text">
+                        {{j.comment_text}}
+                        
+                    <ul>{% if j.pub != 'private' %}
+                        <li><a href="/dataset/comments/delete?id={{j.id}}" class="delete" ><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
+                        {%else%}
+                        <li><a href="/dataset/comments/delete?id={{j.id}}" class="delete" ><i class='fa fa-remove'></i> {{_('show')}}</a></li>
+                        {%endif%}
+                    <ul>
+
+                    </p>
+                </div>
+            </div>
+            {%endfor%}
+
+            <noscript>
+                    {% if c.user != ''%}
+                        <form class="form-horizontal" method="post" action="/dataset/{{c.current_package_id}}/comments/new?parent_id={{i.id}}">
+                          <div class="controls" style="margin-left:0px;">                     
+                            <textarea id="textarea" name="comment_text" style="resize: vertical;width: 100%;"> {{ _('Reply') }}...</textarea>
+                          </div>
+
+                          <div class="controls" style="margin-left:0px;">
+                            <button id="submit" name="submit" class="btn btn-default">{{_('Post comment')}}</button>
+                            <textarea id="textarea" name="dataset_id" style="display:none;">{{c.current_package_id}}</textarea>
+                            <textarea id="textarea" name="comment_id" style="display:none;">{{c.id}}</textarea>
+                          </div>
+                        </form>
+                    {%endif%}
+                </noscript>
+            
+                    {% if c.user != ''%}
+                        <form class="form-horizontal" method="post" action="/dataset/{{c.current_package_id}}/comments/new?parent_id={{i.id}}" hidden id="{{i.id}}">
+                          <div class="controls" style="margin-left:0px;">                     
+                            <textarea id="textarea" name="comment_text" style="resize: vertical;width: 100%;"> {{ _('Reply') }}...</textarea>
+                          </div>
+
+                          <div class="controls" style="margin-left:0px;">
+                            <button id="submit" name="submit" class="btn btn-default">{{_('Post comment')}}</button>
+                            <textarea id="textarea" name="dataset_id" style="display:none;">{{c.current_package_id}}</textarea>
+                            <textarea id="textarea" name="comment_id" style="display:none;">{{c.id}}</textarea>
+                          </div>
+                        </form>
+                    {%endif%}
+            
             <!--div class="comments_2nd">
                 <div class="comment" id="comment_id">
                     <h3>username</h3><p class="date"> 2001.9.11</p>
@@ -72,6 +120,9 @@ TODO:
 
 <!-- form -->
 
+
+{% if c.user != '' %}
+
 <form class="form-horizontal" method="post" action="/dataset/{{c.current_package_id}}/comments/new">
 <legend>{{ _('New comment') }}</legend>
 
@@ -84,7 +135,7 @@ TODO:
     <textarea id="textarea" name="dataset_id" style="display:none;">{{c.current_package_id}}</textarea>
   </div>
 </form>
-
+{%endif%}
 <!-- end form -->
   
 {% endblock %}
