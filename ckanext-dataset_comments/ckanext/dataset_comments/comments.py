@@ -105,8 +105,13 @@ class CommentsController(base.BaseController):
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
         data_dict = {'id': base.request.params.get('id', '')}
+
+        try:
+            logic.check_access('app_editall', context)
+            mod_comments(context, data_dict)
+        except logic.NotAuthorized:
+            logging.warning('NotAuthorized')
         
-        mod_comments(context, data_dict)
         dataset_id = get_comments(context, data_dict)[0].dataset_id
         return h.redirect_to(controller='package', action='read', id=dataset_id)
 
@@ -117,27 +122,21 @@ def ListComments(id):
                'for_view': True}
     data_dict = {'dataset_id':  id, 'parent': ''}
     comments = get_comments(context, data_dict)
-    
-    c.hasprivileg = 'True'
 
     
-    '''
-    context2 = {'user' : c.user}
-    try:
-        logic.check_access('app_create', context2)
-    except logic.NotAuthorized:
-   		c.hasprivileg = 'False'
-	'''
+
     comments = sorted(comments, key=lambda comments: comments.date)
     comments2 = []
     for i in comments:
         if i.pub == 'public':
             comments2.append(i)
 
-    if c.hasprivileg:
+    try:
+        logic.check_access('app_editall', context)
         return comments
-    else:
+    except logic.NotAuthorized:
         return comments2
+        
 
 def GetUsername(user_id):
     username = model.Session.query(model.User) \
@@ -150,12 +149,24 @@ def ListChildren(id, comment_id):
     data_dict = {'dataset_id':  id, 'parent': comment_id}
     comments = get_comments(context, data_dict)
     comments = sorted(comments, key=lambda comments: comments.date)
-    return comments
-'''
-TODO:
--reply
--list replied comments
--privilegs to edit/show hidden comments
--hide all 2nd lvl comments if the parent is hidden
 
-'''
+    comments2 = []
+    for i in comments:
+        if i.pub == 'public':
+            comments2.append(i)
+
+    try:
+        logic.check_access('app_editall', context)
+        return comments
+    except logic.NotAuthorized:
+        return comments2
+def Editor():
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    try:
+        logic.check_access('app_editall', context)
+        return True
+    except logic.NotAuthorized:
+        return False
+

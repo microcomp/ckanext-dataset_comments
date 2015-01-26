@@ -27,4 +27,5 @@ class DatasetCommentsPlugin(plugins.SingletonPlugin):
     def get_helpers(self):
         return {'list': comments.ListComments,
                 'username': comments.GetUsername,
-                'list_children': comments.ListChildren }
+                'list_children': comments.ListChildren,
+                'editor': comments.Editor }

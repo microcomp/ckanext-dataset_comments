@@ -15,8 +15,9 @@
         <p class="comment_text" style="color:#858585;">
             {{i.comment_text}}
             <ul>
+                {% if h.editor() %}
                 <li style="color:#858585;"><a href="/dataset/comments/delete?id={{i.id}}" class="delete" style="color:#858585;"><i class='fa fa-remove'></i> {{_('show')}}</a></li>
-
+                {%endif%}
             <ul>
 
             
@@ -24,11 +25,7 @@
     </div>
 </div>
 
-{#
-{%endif%}{%if c.hasprivileg == False%}
-TODO:
--privilegs for editing...
-#}
+
 
 
 {% elif i.pub == 'public'%}
@@ -36,8 +33,8 @@ TODO:
 function show_form(id){
     var form = document.getElementById(id)
     form.hidden = false;
-
 }
+
 </script>
 <div class="comments_1st">
     <div class="comment" id="comment_id"  >
@@ -46,10 +43,12 @@ function show_form(id){
         <p class="comment_text">
             {{i.comment_text}}
             <ul>
-                <li><a href="#comment_id" class="reply" onclick='show_form("{{i.id}}");' ><i class='fa fa-reply' ></i> {{_('reply')}}</a></li>
-                {#% if c.hasprivileg %#}
-                <li><a href="/dataset/comments/delete?id={{i.id}}" class="delete" ><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
-                {#%endif%#}
+                {% if c.user!= '' %}
+                    <li><a href="#comment_id" class="reply" onclick='show_form("{{i.id}}");' ><i class='fa fa-reply' ></i> {{_('reply')}}</a></li>
+                {%endif%}
+                {% if h.editor() %}
+                    <li><a href="/dataset/comments/delete?id={{i.id}}" class="delete" ><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
+                {%endif%}
             <ul>
 
             {% for j in h.list_children(c.current_package_id, i.id) %}
@@ -59,11 +58,14 @@ function show_form(id){
                     <p class="comment_text" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}>
                         {{j.comment_text}}
                         
-                    <ul>{% if j.pub != 'private' %}
+                    <ul>
+                    {% if h.editor() %}
+                        {% if j.pub != 'private' %}
                         <li><a href="/dataset/comments/delete?id={{j.id}}" class="delete" ><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
                         {%else%}
                         <li><a href="/dataset/comments/delete?id={{j.id}}" class="delete" style="color:#858585;"><i class='fa fa-remove'></i> {{_('show')}}</a></li>
                         {%endif%}
+                    {%endif%}
                     <ul>
 
                     </p>
