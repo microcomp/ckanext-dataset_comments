@@ -127,15 +127,18 @@ def ListComments(id):
 
     comments = sorted(comments, key=lambda comments: comments.date)
     comments2 = []
-    for i in comments:
+    comments3 = comments[:]
+    for i in comments3:
         if i.pub == 'public':
             comments2.append(i)
-
-    try:
-        logic.check_access('app_editall', context)
-        return comments
-    except logic.NotAuthorized:
-        return comments2
+        else:
+            try:
+                logic.check_access('app_editall', context)
+                comments2.append(i)
+            except logic.NotAuthorized:
+                i.comment_text = _('inappropriate content')
+                comments2.append(i)
+    return comments2
         
 
 def GetUsername(user_id):
@@ -149,17 +152,19 @@ def ListChildren(id, comment_id):
     data_dict = {'dataset_id':  id, 'parent': comment_id}
     comments = get_comments(context, data_dict)
     comments = sorted(comments, key=lambda comments: comments.date)
-
     comments2 = []
-    for i in comments:
+    comments3 = comments[:]
+    for i in comments3:
         if i.pub == 'public':
             comments2.append(i)
-
-    try:
-        logic.check_access('app_editall', context)
-        return comments
-    except logic.NotAuthorized:
-        return comments2
+        else:
+            try:
+                logic.check_access('app_editall', context)
+                comments2.append(i)
+            except logic.NotAuthorized:
+                i.comment_text = _('inappropriate content')
+                comments2.append(i)
+    return comments2
 def Editor():
     context = {'model': model, 'session': model.Session,
                'user': c.user or c.author, 'auth_user_obj': c.userobj,

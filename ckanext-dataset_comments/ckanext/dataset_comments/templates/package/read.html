@@ -9,7 +9,7 @@
 <!-- form -->
 
 
-{% if c.user != '' %}
+{#% if c.user != '' %}
 
 <form class="form-horizontal" method="post" action="/dataset/{{c.current_package_id}}/comments/new">
 <legend>{{ _('New comment') }}</legend>
@@ -23,7 +23,7 @@
     <textarea id="textarea" name="dataset_id" style="display:none;">{{c.current_package_id}}</textarea>
   </div>
 </form>
-{%endif%}
+{%endif%#}
 <!-- end form -->
   
 {% endblock %}

@@ -1,0 +1,7 @@
+{%ckan_extends%}
+
+{%block primary_content %}
+{{super()}}
+ <link href='/comments.css' type="text/css" rel='stylesheet'>
+{% snippet "package/snippets/comments.html", data = [c.package.id, c.user, c.id] %}
+{%endblock%}
