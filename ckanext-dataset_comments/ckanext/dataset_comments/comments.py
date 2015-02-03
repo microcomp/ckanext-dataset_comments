@@ -100,6 +100,41 @@ class CommentsController(base.BaseController):
         model.Session.commit()
         url = "dataset/"+dataset_id
         return h.redirect_to(controller='package', action='read', id=dataset_id)
+
+
+    def NewAppComment(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        c.post_data = logic.clean_dict(df.unflatten(logic.tuplize_dict(logic.parse_params(base.request.params))))
+        id = unicode(uuid.uuid4()) 
+        date = time.strftime("%Y/%m/%d %H:%m:%S")  
+        text = c.post_data['comment_text']
+        dataset_id = c.post_data['app_id']
+
+        g.comment_errors = []
+
+        if c.userobj.id == '' or c.userobj.id == None:
+            base.redirect_to(controller='user', action='login')
+        text = " ".join(text.split())
+
+        if len(text) < 5:
+            base.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id, error='too_short')
+        parent = base.request.params.get('parent_id','') 
+
+        if parent == "":
+            parent = None   
+
+        data_dict = {'id': id, 'user_id':c.userobj.id, 
+                    'date': date, 'pub': 'public', 
+                    'dataset_id': dataset_id,
+                    'comment_text': text, 'parent': parent}
+        logging.warning(c.post_data)
+        new_comment(context, data_dict)
+        model.Session.commit()
+
+        return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
+
     def DeleteComment(self):
     	context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -115,6 +150,20 @@ class CommentsController(base.BaseController):
         dataset_id = get_comments(context, data_dict)[0].dataset_id
         return h.redirect_to(controller='package', action='read', id=dataset_id)
 
+    def DeleteAppComment(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        data_dict = {'id': base.request.params.get('id', '')}
+
+        try:
+            logic.check_access('app_editall', context)
+            mod_comments(context, data_dict)
+        except logic.NotAuthorized:
+            logging.warning('NotAuthorized')
+        
+        dataset_id = get_comments(context, data_dict)[0].dataset_id
+        return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
 
 def ListComments(id):
     context = {'model': model, 'session': model.Session,
@@ -139,7 +188,7 @@ def ListComments(id):
                 i.comment_text = _('inappropriate content')
                 comments2.append(i)
     return comments2
-        
+
 
 def GetUsername(user_id):
     username = model.Session.query(model.User) \

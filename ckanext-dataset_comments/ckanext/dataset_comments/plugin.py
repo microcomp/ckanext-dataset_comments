@@ -20,6 +20,9 @@ class DatasetCommentsPlugin(plugins.SingletonPlugin):
     def before_map(self, map):
     	map.connect('del_comment', '/dataset/comments/delete', action='DeleteComment', controller='ckanext.dataset_comments.comments:CommentsController')
     	map.connect('new_comment', '/dataset/{id}/comments/new', action='NewComment', controller='ckanext.dataset_comments.comments:CommentsController')
+
+        map.connect('del_app_comment', '/apps/comments/delete', action='DeleteAppComment', controller='ckanext.dataset_comments.comments:CommentsController')
+        map.connect('new_app_comment', '/apps/{app_id}/comments/new', action='NewAppComment', controller='ckanext.dataset_comments.comments:CommentsController')
         return map
     def update_config(self, config):
         toolkit.add_template_directory(config, 'templates')
