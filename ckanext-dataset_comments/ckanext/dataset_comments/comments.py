@@ -74,7 +74,7 @@ class CommentsController(base.BaseController):
                    'for_view': True}
         c.post_data = logic.clean_dict(df.unflatten(logic.tuplize_dict(logic.parse_params(base.request.params))))
         id = unicode(uuid.uuid4()) 
-        date = time.strftime("%Y/%m/%d %H:%m:%S")  
+        date = time.strftime("%Y/%m/%d %H:%M:%S")  
         text = c.post_data['comment_text']
         dataset_id = c.post_data['dataset_id']
 
@@ -82,10 +82,18 @@ class CommentsController(base.BaseController):
 
         if c.userobj.id == '' or c.userobj.id == None:
             base.redirect_to(controller='user', action='login')
-        text = " ".join(text.split())
+        text = " ".join(text.split(" "))
+        text = text.replace('\r\n', '<br />')
+        text = text.split('<br />')
+        text2 = []
+        for i in range(len(text)):
+            if text[i] != '' and text[i] != ' ':
+                text2.append(text[i])
 
+        text = "<br />".join(text2)
         if len(text) < 5:
             base.redirect_to(controller='package', action='read', id=dataset_id, error='too_short')
+        
         parent = base.request.params.get('parent_id','') 
 
         if parent == "":
@@ -108,7 +116,7 @@ class CommentsController(base.BaseController):
                    'for_view': True}
         c.post_data = logic.clean_dict(df.unflatten(logic.tuplize_dict(logic.parse_params(base.request.params))))
         id = unicode(uuid.uuid4()) 
-        date = time.strftime("%Y/%m/%d %H:%m:%S")  
+        date = time.strftime("%Y/%m/%d %H:%M:%S")  
         text = c.post_data['comment_text']
         dataset_id = c.post_data['app_id']
 
@@ -116,7 +124,15 @@ class CommentsController(base.BaseController):
 
         if c.userobj.id == '' or c.userobj.id == None:
             base.redirect_to(controller='user', action='login')
-        text = " ".join(text.split())
+        text = " ".join(text.split(" "))
+        text = text.replace('\r\n', '<br />')
+        text = text.split('<br />')
+        text2 = []
+        for i in range(len(text)):
+            if text[i] != '' and text[i] != ' ':
+                text2.append(text[i])
+
+        text = "<br />".join(text2)
 
         if len(text) < 5:
             base.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id, error='too_short')
@@ -129,6 +145,7 @@ class CommentsController(base.BaseController):
                     'date': date, 'pub': 'public', 
                     'dataset_id': dataset_id,
                     'comment_text': text, 'parent': parent}
+        
         logging.warning(c.post_data)
         new_comment(context, data_dict)
         model.Session.commit()
