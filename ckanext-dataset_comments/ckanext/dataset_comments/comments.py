@@ -1,3 +1,4 @@
+# coding=utf-8
 import urllib
 
 from sqlalchemy import create_engine
@@ -45,12 +46,20 @@ def new_comment(context, data_dict):
     return {"status":"success"}
 
 @ckan.logic.side_effect_free
-def get_comments(context, data_dict):
+def get_comments(context, data_dict = None):
     
     if comments_db.dataset_comments_table is None:
         comments_db.init_db(context['model'])
     res = comments_db.DatasetComments.get(**data_dict)
     return res
+@ckan.logic.side_effect_free
+def get_all_comments(context, data_dict = None):
+    
+    if comments_db.dataset_comments_table is None:
+        comments_db.init_db(context['model'])
+    res = comments_db.DatasetComments.getAll(**data_dict)
+    return res
+
 @ckan.logic.side_effect_free
 def mod_comments(context, data_dict):
     create_dataset_comments_table(context)
@@ -60,13 +69,78 @@ def mod_comments(context, data_dict):
     	info[0].pub = 'public'
     else:
     	info[0].pub = 'private'
+
+    info[0].save()
+    session = context['session']
+    #session.add(info)
+    session.commit()
+    return {"status":"success"}
+
+@ckan.logic.side_effect_free
+def report_comments(context, data_dict):
+    create_dataset_comments_table(context)
+    info = comments_db.DatasetComments.get(**data_dict)
+    
+    if info[0].pub == 'public':
+        info[0].pub = 'reported'
+    
+
     info[0].save()
     session = context['session']
     #session.add(info)
     session.commit()
     return {"status":"success"}
 class CommentsController(base.BaseController):
+    def ReportComment(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        data_dict = {'id': base.request.params.get('id', '')}
+        report_comments(context, data_dict)
+        
+        dataset_id = get_comments(context, data_dict)[0].dataset_id
+        return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
 
+    def AdminList(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author,
+                   'auth_user_obj': c.userobj,
+                   'for_view': True}
+
+        try:
+            logic.check_access('app_editall', context)
+        except logic.NotAuthorized:
+            base.abort(401, _('Not authorized to see this page'))
+
+        all_comments = AdminCommentList()
+        
+        c.comments = []
+        comment_type = base.request.params.get('type','')
+        if comment_type == 'deleted':
+            for i in all_comments:
+                if i.pub == 'private':
+                    c.comments.append(i)
+        elif comment_type == 'public':
+            for i in all_comments:
+                if i.pub == 'public':
+                    c.comments.append(i)
+        elif comment_type == 'reported':
+            for i in all_comments:
+                if i.pub == 'reported':
+                    c.comments.append(i)
+        else:
+            c.comments = all_comments
+
+        sort = base.request.params.get('sort','')
+
+        if sort == 'newest':
+            c.comments = sorted(c.comments, key=lambda comments: comments.date, reverse=True)
+        if sort == 'oldest':
+            c.comments = sorted(c.comments, key=lambda comments: comments.date)
+
+        c.len = len(c.comments)
+
+        return base.render("comments/admin.html")
 
     def NewComment(self):
         context = {'model': model, 'session': model.Session,
@@ -182,6 +256,8 @@ class CommentsController(base.BaseController):
         dataset_id = get_comments(context, data_dict)[0].dataset_id
         return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
 
+
+
 def ListComments(id):
     context = {'model': model, 'session': model.Session,
                'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -202,7 +278,7 @@ def ListComments(id):
                 logic.check_access('app_editall', context)
                 comments2.append(i)
             except logic.NotAuthorized:
-                i.comment_text = _('inappropriate content')
+                i.comment_text = _('Komentár obsahoval nevhodný obsah a bol odstránený správcom.'.decode('utf-8')) #_('inappropriate content')
                 comments2.append(i)
     return comments2
 
@@ -228,7 +304,7 @@ def ListChildren(id, comment_id):
                 logic.check_access('app_editall', context)
                 comments2.append(i)
             except logic.NotAuthorized:
-                i.comment_text = _('inappropriate content')
+                i.comment_text = _('Komentár obsahoval nevhodný obsah a bol odstránený správcom.'.decode('utf-8')) #_('inappropriate content')
                 comments2.append(i)
     return comments2
 def Editor():
@@ -240,4 +316,25 @@ def Editor():
         return True
     except logic.NotAuthorized:
         return False
+
+def AdminCommentList():
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    data_dict = {'dataset_id':  id, 'parent': ''}
+
+    comments = get_all_comments(context, {'id':'*'})
+    comments = sorted(comments, key=lambda comments: comments.date)
+
+    return comments
+def IsApp(id):
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    data_dict = {'related_id': id}
+    related = model.Session.query(model.Related) \
+                .filter(model.Related.id == id).first()
+    if related != None:
+        return True
+    return False
 

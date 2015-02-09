@@ -19,6 +19,8 @@
             <ul>
                 {% if h.editor() %}
                 <li style="color:#858585;"><a href="/dataset/comments/delete?id={{i.id}}" class="delete" style="color:#858585;"><i class='fa fa-remove'></i> {{_('show')}}</a></li>
+                {%else%}
+                <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report')}}</a></li>
                 {%endif%}
             <ul>
                 <!-- remove this -->
@@ -38,6 +40,8 @@
                         {%else%}
                         <li><a href="/dataset/comments/delete?id={{j.id}}" class="delete" style="color:#858585;"><i class='fa fa-remove'></i> {{_('show')}}</a></li>
                         {%endif%}
+                    {%else%}
+                        <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report')}}</a></li>
                     {%endif%}
                     <ul>
 
@@ -77,6 +81,8 @@ function show_form(id){
                 {%endif%}
                 {% if h.editor() %}
                     <li><a href="/dataset/comments/delete?id={{i.id}}" class="delete" ><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
+                {%else%}
+                <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report')}}</a></li>
                 {%endif%}
             <ul>
 
@@ -96,6 +102,8 @@ function show_form(id){
                         {%else%}
                         <li><a href="/dataset/comments/delete?id={{j.id}}" class="delete" style="color:#858585;"><i class='fa fa-remove'></i> {{_('show')}}</a></li>
                         {%endif%}
+                    {%else%}
+                        <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report')}}</a></li>
                     {%endif%}
                     <ul>
 

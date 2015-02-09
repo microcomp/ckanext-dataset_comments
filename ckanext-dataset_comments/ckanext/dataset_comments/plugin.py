@@ -23,6 +23,9 @@ class DatasetCommentsPlugin(plugins.SingletonPlugin):
 
         map.connect('del_app_comment', '/apps/comments/delete', action='DeleteAppComment', controller='ckanext.dataset_comments.comments:CommentsController')
         map.connect('new_app_comment', '/apps/{app_id}/comments/new', action='NewAppComment', controller='ckanext.dataset_comments.comments:CommentsController')
+        map.connect('report_app_comment', '/comments/report', action='ReportComment', controller='ckanext.dataset_comments.comments:CommentsController')
+
+        map.connect('moderator_v', '/admin/comments', action='AdminList', controller='ckanext.dataset_comments.comments:CommentsController')
         return map
     def update_config(self, config):
         toolkit.add_template_directory(config, 'templates')
@@ -31,4 +34,5 @@ class DatasetCommentsPlugin(plugins.SingletonPlugin):
         return {'list': comments.ListComments,
                 'username': comments.GetUsername,
                 'list_children': comments.ListChildren,
-                'editor': comments.Editor }
+                'editor': comments.Editor,
+                'is_app': comments.IsApp }
