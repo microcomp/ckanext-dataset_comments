@@ -100,6 +100,25 @@ class CommentsController(base.BaseController):
         
         dataset_id = get_comments(context, data_dict)[0].dataset_id
         return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
+    def AdminDeleteComment(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        data_dict = {'id': base.request.params.get('id', '')}
+
+        try:
+            logic.check_access('app_editall', context)
+            mod_comments(context, data_dict)
+        except logic.NotAuthorized:
+            logging.warning('NotAuthorized')
+        
+        page = base.request.params.get("page",'')
+        type = base.request.params.get("type",'')
+        sort = base.request.params.get("sort",'')
+        username = base.request.params.get("username",'')
+        search = base.request.params.get("search",'')
+
+        return h.redirect_to(controller='ckanext.dataset_comments.comments:CommentsController', action='AdminList',  type=type, sort=sort, username= username, search= search )
 
     def AdminList(self):
         context = {'model': model, 'session': model.Session,
@@ -137,8 +156,48 @@ class CommentsController(base.BaseController):
             c.comments = sorted(c.comments, key=lambda comments: comments.date, reverse=True)
         if sort == 'oldest':
             c.comments = sorted(c.comments, key=lambda comments: comments.date)
+        username = base.request.params.get('username','')
+        
+        if len(username) > 0:
+            user_id = model.Session.query(model.User) \
+                .filter(model.User.name == username).first().id
+            cc = [x for x in c.comments if x.user_id == user_id]
+            c.comments = cc
+        c.search_user = username
+
+        search_text = base.request.params.get('search','')
+        
+        if len(search_text) > 0:
+            cc = [x for x in c.comments if search_text.lower() in x.comment_text.lower()]
+            c.comments = cc
+        c.search_text = search_text
 
         c.len = len(c.comments)
+        page = base.request.params.get("page",'')
+        if page == '':
+            page = 1
+        try:
+            page = int(page)
+        except ValueError, e:
+            base.abort(400, ('"page" parameter must be an integer'))
+
+        c.comment_page = []
+        buffer = []
+        for i in range(len(c.comments)):
+            buffer.append(c.comments[i])
+            if len(buffer) > 9:
+                c.comment_page.append(buffer)
+                buffer = []
+        
+        c.comment_page.append(buffer)
+
+        c.comments = c.comment_page[page-1]
+        c.page_num = c.len // 10 +1
+        c.page = page
+        
+
+        c.pages = [x for x in range(c.page-3, c.page+3) if x > 0 and x < c.page_num]
+        
 
         return base.render("comments/admin.html")
 

@@ -32,7 +32,14 @@
       {% endblock %#}
 <strong>{{ c.len }}</strong> {{_('comments found')}}</p>
 <hr>
+{% if request.url.split("?")|length > 1 %}
+{% set data =  request.url.split("?")[1] %}
 
+{% set post = data.split('&') %}
+{% set no_page = post[1:][0] %}
+{% set no_page2 = post[1:][1] %}
+
+{%endif%}
 
 
       <ul class="dataset-list unstyled">
@@ -48,18 +55,45 @@
       				/dataset/{{comment.dataset_id}}
       			{%endif%}
       			"> URL </a>
-      		</h4>
 
-      		<p>{{comment.comment_text}}</p>
+      		</h4>
+          
+      		<p>
+            {% for i in comment.comment_text.split('<br />')%}
+            {{i}}<br />
+            {%endfor%}
+          </p>
+          {%if comment.pub == 'public'%}
+                      <a href="/comments/delete?id={{comment.id}}&{{data}}"><i class='fa fa-close'></i>{{_('delete')}}</a>
+              {%elif comment.pub == 'reported'%}
+                      <a href="/comments/delete?id={{comment.id}}&{{data}}"><i class='fa fa-close'></i>{{_('delete')}}</a>
+              {%else%}
+                     <a href="/comments/delete?id={{comment.id}}&{{data}}"><i class='fa fa-close'></i>{{_('restore')}}</a>
+              {%endif%}
       	</div>
       </li>
       {%endfor%}
      <ul>
     </div>
+{% if request.url.split("?")|length > 1 %}
+{% set data =  request.url.split("?")[1] %}
 
-    {#% block page_pagination %}
-      {{ page.pager() }}
-    {% endblock %#}
+{% set post = data.split('&') %}
+{% set no_page = post[1:][0] %}
+{% set no_page2 = post[1:][1] %}
+
+{%endif%}
+
+    <hr>
+    <div class="pagination pagination-centered">
+      <ul>
+        <li> <a href='/admin/comments?page=1&{{no_page}}&{{no_page2}}'>«</a></li>
+        {% for i in c.pages %}
+          <li {% if i|int == c.page|int %} class="active" {%endif%}> <a href='/admin/comments?page={{i}}&{{no_page}}&{{no_page2}}'>{{i}} </a></li>
+        {%endfor%}
+        <li> <a href='/admin/comments?page={{c.page_num}}&{{no_page}}&{{no_page2}}'>»</a></li>
+      </ul>
+    </div
   </article>
 {% endblock %}
 
@@ -91,7 +125,15 @@
         </select>
       </div>
 
-      
+      <div class="control-group">
+        <label for="field-usern">{{ _('Username') }}</label>
+        <input id="field-usern" name="username" class="search" style="width:100%;" value="{% if c.search_user %}{{c.search_user}}{%endif%}">
+      </div>
+
+      <div class="control-group">
+        <label for="field-search">{{ _('Search text') }}</label>
+        <input id="field-search" name="search" class="search" style="width:100%;" value="{% if c.search_text %}{{c.search_text}}{%endif%}">
+      </div>
 
       <div class="form-actions">
         <button class="btn btn-primary">{{ _('Apply') }}</button>
