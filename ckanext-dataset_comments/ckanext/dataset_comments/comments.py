@@ -196,7 +196,7 @@ class CommentsController(base.BaseController):
         c.page = page
         
 
-        c.pages = [x for x in range(c.page-3, c.page+3) if x > 0 and x < c.page_num]
+        c.pages = [x for x in range(c.page-3, c.page+3) if x > 0 and x <= c.page_num]
         
 
         return base.render("comments/admin.html")
