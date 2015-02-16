@@ -26,6 +26,7 @@ class DatasetCommentsPlugin(plugins.SingletonPlugin):
         map.connect('report_app_comment', '/comments/report', action='ReportComment', controller='ckanext.dataset_comments.comments:CommentsController')
 
         map.connect('admin_delete', '/comments/delete', action='AdminDeleteComment', controller='ckanext.dataset_comments.comments:CommentsController')
+        map.connect('admin_restore', '/comments/restore', action='AdminRestoreComment', controller='ckanext.dataset_comments.comments:CommentsController')
 
         map.connect('moderator_v', '/admin/comments', action='AdminList', controller='ckanext.dataset_comments.comments:CommentsController')
         return map

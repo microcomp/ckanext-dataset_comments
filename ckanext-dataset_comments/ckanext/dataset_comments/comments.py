@@ -22,6 +22,16 @@ import ckan.logic
 import __builtin__
 
 _check_access = logic.check_access
+def IsApp(id):
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    data_dict = {'related_id': id}
+    related = model.Session.query(model.Related) \
+                .filter(model.Related.id == id).first()
+    if related != None:
+        return True
+    return False
 
 def create_dataset_comments_table(context):
     if comments_db.dataset_comments_table is None:
@@ -75,6 +85,19 @@ def mod_comments(context, data_dict):
     #session.add(info)
     session.commit()
     return {"status":"success"}
+@ckan.logic.side_effect_free
+def restore_comments(context, data_dict):
+    create_dataset_comments_table(context)
+    info = comments_db.DatasetComments.get(**data_dict)
+    
+    
+    info[0].pub = 'public'
+
+    info[0].save()
+    session = context['session']
+    #session.add(info)
+    session.commit()
+    return {"status":"success"}
 
 @ckan.logic.side_effect_free
 def report_comments(context, data_dict):
@@ -90,6 +113,7 @@ def report_comments(context, data_dict):
     #session.add(info)
     session.commit()
     return {"status":"success"}
+
 class CommentsController(base.BaseController):
     def ReportComment(self):
         context = {'model': model, 'session': model.Session,
@@ -99,7 +123,32 @@ class CommentsController(base.BaseController):
         report_comments(context, data_dict)
         
         dataset_id = get_comments(context, data_dict)[0].dataset_id
-        return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
+
+        if IsApp(dataset_id):
+            return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
+        else:
+            return h.redirect_to(controller='package', action='read', id=dataset_id)
+
+
+    def AdminRestoreComment(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        data_dict = {'id': base.request.params.get('id', '')}
+
+        try:
+            logic.check_access('app_editall', context)
+            restore_comments(context, data_dict)
+        except logic.NotAuthorized:
+            logging.warning('NotAuthorized')
+        
+        page = base.request.params.get("page",'')
+        type = base.request.params.get("type",'')
+        sort = base.request.params.get("sort",'')
+        username = base.request.params.get("username",'')
+        search = base.request.params.get("search",'')
+
+        return h.redirect_to(controller='ckanext.dataset_comments.comments:CommentsController', action='AdminList',  type=type, sort=sort, username= username, search= search )        
     def AdminDeleteComment(self):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -160,7 +209,9 @@ class CommentsController(base.BaseController):
         
         if len(username) > 0:
             user_id = model.Session.query(model.User) \
-                .filter(model.User.name == username).first().id
+                .filter(model.User.name == username).first()
+            if user_id:
+                user_id = user_id.id
             cc = [x for x in c.comments if x.user_id == user_id]
             c.comments = cc
         c.search_user = username
@@ -330,7 +381,7 @@ def ListComments(id):
     comments2 = []
     comments3 = comments[:]
     for i in comments3:
-        if i.pub == 'public':
+        if i.pub == 'public' or i.pub == 'reported':
             comments2.append(i)
         else:
             try:
@@ -356,7 +407,7 @@ def ListChildren(id, comment_id):
     comments2 = []
     comments3 = comments[:]
     for i in comments3:
-        if i.pub == 'public':
+        if i.pub == 'public' or i.pub == 'reported':
             comments2.append(i)
         else:
             try:
@@ -386,14 +437,5 @@ def AdminCommentList():
     comments = sorted(comments, key=lambda comments: comments.date)
 
     return comments
-def IsApp(id):
-    context = {'model': model, 'session': model.Session,
-               'user': c.user or c.author, 'auth_user_obj': c.userobj,
-               'for_view': True}
-    data_dict = {'related_id': id}
-    related = model.Session.query(model.Related) \
-                .filter(model.Related.id == id).first()
-    if related != None:
-        return True
-    return False
+
 

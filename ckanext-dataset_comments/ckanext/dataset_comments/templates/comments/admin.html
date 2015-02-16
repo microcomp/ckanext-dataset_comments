@@ -67,8 +67,9 @@
                       <a href="/comments/delete?id={{comment.id}}&{{data}}"><i class='fa fa-close'></i>{{_('delete')}}</a>
               {%elif comment.pub == 'reported'%}
                       <a href="/comments/delete?id={{comment.id}}&{{data}}"><i class='fa fa-close'></i>{{_('delete')}}</a>
+                      <a href="/comments/restore?id={{comment.id}}&{{data}}"><i class='fa fa-check'></i>{{_('restore')}}</a>
               {%else%}
-                     <a href="/comments/delete?id={{comment.id}}&{{data}}"><i class='fa fa-close'></i>{{_('restore')}}</a>
+                     <a href="/comments/restore?id={{comment.id}}&{{data}}"><i class='fa fa-check'></i>{{_('restore')}}</a>
               {%endif%}
       	</div>
       </li>
@@ -134,9 +135,15 @@
         <label for="field-search">{{ _('Search text') }}</label>
         <input id="field-search" name="search" class="search" style="width:100%;" value="{% if c.search_text %}{{c.search_text}}{%endif%}">
       </div>
-
+<style type="text/css">
+.mybutton:hover{
+  text-decoration: none;
+  color: white;
+}
+</style>
       <div class="form-actions">
-        <button class="btn btn-primary">{{ _('Apply') }}</button>
+        <button class="mybutton">{{ _('Apply') }}</button>
+        <a class="mybutton" href="/admin/comments" style="padding:0.45em;">{{ _('Reset') }}</a>
       </div>
     </form>
   </section>
