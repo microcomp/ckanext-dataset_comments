@@ -263,8 +263,12 @@ class CommentsController(base.BaseController):
         dataset_id = c.post_data['dataset_id']
 
         g.comment_errors = []
+        if c.userobj:
+            pass
+        else:
+            base.redirect_to(controller='user', action='login')
 
-        if c.userobj.id == '' or c.userobj.id == None:
+        if c.userobj.id == '' or c.userobj.id == None or c.userobj == None:
             base.redirect_to(controller='user', action='login')
         text = " ".join(text.split(" "))
         text = text.replace('\r\n', '<br />')
@@ -305,9 +309,14 @@ class CommentsController(base.BaseController):
         dataset_id = c.post_data['app_id']
 
         g.comment_errors = []
-
-        if c.userobj.id == '' or c.userobj.id == None:
+        if c.userobj:
+            pass
+        else:
             base.redirect_to(controller='user', action='login')
+
+        if c.userobj.id == '' or c.userobj.id == None or c.userobj == None:
+            base.redirect_to(controller='user', action='login')
+        
         text = " ".join(text.split(" "))
         text = text.replace('\r\n', '<br />')
         text = text.split('<br />')
