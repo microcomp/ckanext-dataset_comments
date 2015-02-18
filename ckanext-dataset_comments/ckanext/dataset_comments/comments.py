@@ -102,6 +102,7 @@ def restore_comments(context, data_dict):
 @ckan.logic.side_effect_free
 def report_comments(context, data_dict):
     create_dataset_comments_table(context)
+
     info = comments_db.DatasetComments.get(**data_dict)
     
     if info[0].pub == 'public':
@@ -120,6 +121,11 @@ class CommentsController(base.BaseController):
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
         data_dict = {'id': base.request.params.get('id', '')}
+        try:
+            logic.check_access('app_create', context)
+        except logic.NotAuthorized:
+            base.abort(401, _('Not authorized to report, please login first'))
+            
         report_comments(context, data_dict)
         
         dataset_id = get_comments(context, data_dict)[0].dataset_id
