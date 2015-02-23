@@ -1,6 +1,11 @@
 {% ckan_extends %}
 {% import 'macros/form.html' as form %}
 {% set page = c.page %}
+{%if h.extra_v() != {} %}
+{% set errors = h.extra_v()['errors'] %}
+{% set data = h.extra_v()['data'] %}
+{%endif%}
+
 
 
 {% block subtitle %}
@@ -33,6 +38,7 @@ FORM
     
       <section class="module">
 <script>
+/*
 function match(x, array){
   for(var i = 0; i < array.length; i++){
     if(x == array[i]){
@@ -41,6 +47,7 @@ function match(x, array){
   }
   return false
 }
+
 function validateForm() {
     var title = document.forms["new_app_form"]["title"].value;
     var url = document.forms["new_app_form"]["url"].value;
@@ -63,16 +70,13 @@ function validateForm() {
     }
     
 }
+*/
 
-function submitForms(){
-    /*document.forms[1].submit();*/
-    document.forms[2].submit();
-}
 
 </script>
           <div class="module-content">
              <h1> New app </h1>
-            <form name="new_app_form" onsubmit="return validateForm()" class="dataset-form form-horizontal" method="post" data-module="basic-form" action='/apps/new/in'>
+            <form name="new_app_form"  class="dataset-form form-horizontal" method="post" data-module="basic-form" action='/apps/new/in'>
               {% block error_summary %}
                 {% if error_summary | count %}
                   <div class="alert alert-error error-explanation">
@@ -93,23 +97,38 @@ function submitForms(){
                     datasets = datasets.split(', ')
                 </script>
               {% endblock %}
+              {%if errors %}
+              <div class="alert alert-danger" role="alert">
+                {% for key, value in errors.iteritems()%}
+                <span class="fa fa-exclamation-circle" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                  {{value|e}} <br />
+                {%endfor%}
+              </div>
+              {%endif%}
 
+
+              
+              
               {% block fields %}
+              {% if data %}
+                {{ form.input('title', label=_('Title'), id='field-title', placeholder=_('My Related Item'), value=data['title'], error="", classes=['control-full']) }}
+                {{ form.input('url', label=_('URL'), id='field-url', placeholder=_('http://example.com/'), value=data['url'], error="", classes=['control-full']) }}
+                {{ form.input('image_url', label=_('Image URL'), id='field-image-url', placeholder=_('http://example.com/image.png'), value=data['image_url'], error="", classes=['control-full']) }}
+                {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the item...'), value=data['description'], error="") }}
+                 {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
+                  {{ form.input('datasets', id='field-tags', label=_('Datasets'), placeholder=_('eg. default'), value=data['datasets'], error='', classes=['control-full'], attrs=tag_attrs) }}
+              {%else%}
                 {{ form.input('title', label=_('Title'), id='field-title', placeholder=_('My Related Item'), value="", error="", classes=['control-full']) }}
                 {{ form.input('url', label=_('URL'), id='field-url', placeholder=_('http://example.com/'), value="", error="", classes=['control-full']) }}
                 {{ form.input('image_url', label=_('Image URL'), id='field-image-url', placeholder=_('http://example.com/image.png'), value="", error="", classes=['control-full']) }}
                 {{ form.markdown('description', label=_('Description'), id='field-description', placeholder=_('A little information about the item...'), value="", error="") }}
-
-                 
-
-                {#% block package_basic_fields_tags %#}
-                  {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
+                 {% set tag_attrs = {'data-module': 'autocomplete', 'data-module-tags': '', 'data-module-source': '/api/2/util/dataset/autocomplete?incomplete=?'} %}
                   {{ form.input('datasets', id='field-tags', label=_('Datasets'), placeholder=_('eg. default'), value=c.dataset, error='', classes=['control-full'], attrs=tag_attrs) }}
-                {#% endblock %#}
-
-                {#{ form.input('datasets', label=_('Datasets'), id='field-datasets', placeholder=_('default'), value="", error="", classes=['control-full']) }#}
-              {% endblock %}
-
+              {%endif%}
+            {% endblock %}
+              {% set errors = h.del_x()['errors'] %}
+              {% set data = h.del_x()['data'] %}
               <div class="form-actions">
                 {% block delete_button %}
                   
@@ -144,13 +163,42 @@ end of form
       </h1>
   {% if c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
   {% else %}
+<style type="text/css">
+.btn-search{
+   
+  
+  padding: 0.25em;
+  color: white;
+  background-color: #bd0a26;
+  padding: 0.3em;
+padding-left: 0.6em;
+padding-right: 0.6em;
+margin: 0.7em;
+border: 1px solid #bd0a26;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+color: white;
+background-color: #bd0a26;
+margin-bottom: 1.5em;
+}
+
+</style>
     <form class="section site-search simple-input" action="/apps/search" method="get" >
-            <div class="field">
+            <!--div class="field"!-->
+              {% if request.url.split("?")[1] %}
+                {% for i in request.url.split("?")[1].split("&") %}
+                {% if i.split('=')[0] != 'app_name' %}
+                   <input id="{{i.split('=')[0]}}" type="text" name="{{i.split('=')[0]}}" value="{{i.split('=')[1]}}" style="display: none;"/> {%endif%}
+                {%endfor%}
+              {%endif%}
               <label for="field-sitewide-search">Search Applications</label>
-              <input id="field-sitewide-search" type="text" name="app_name" placeholder="{% if c.name == "" %}Search{%else%}{{c.name}}{%endif%}" />
-              <button class="btn-search" type="submit"><i class="icon-search"></i></button>
+              <input id="field-sitewide-search" type="text" name="app_name" placeholder="{% if c.name == "" %}Search{%else%}{{c.name}}{%endif%}"  style="display:inline; width: 80%;"/>
+              
               <!--a href='' class="btn-search" type="submit" onclick='submitForms'><i class="icon-search"></i></a-->
-            </div>
+              <button class="btn-search" type="submit" style="display:inline;">{{_('Search')}}</button>
+            <!--/div!-->
+            
     </form>
   {% endif %}
 
@@ -171,7 +219,7 @@ end of form
           <fieldset>
 
           <!-- Form Name -->
-          <legend>{{c.title}}</legend>
+          <legend>{{c.title}} </legend>
 
           <!-- Text input-->
           <div class="control-group">
@@ -221,21 +269,57 @@ end of form
             <div class="controls">
               <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="-->
 
-              <p style="padding-top: 0.3em;font-size:1.2em;">{{c.private}}</p><!--" readonly -->
+              <p style="padding-top: 0.3em;font-size:1.2em;">{{ _(c.private) }}</p><!--" readonly -->
             </div>
           </div>
 
           </fieldset>
-          {%if h.check_access('app_edit', data_dict={'owner_id' : c.owner}) or c.user==c.owner %}
-          <a class='btn btn-primary btn-small media-edit' href="/apps/update?id={{c.id}}" ><span class="fa fa-pencil" > </span> {{_('Edit')}}</a>
-            <script src="/js/jquery.min.js"></script>
+           <script src="/js/jquery.min.js"></script>
             <script src="/js/bootbox.js"></script>
             <script src="/js/bootstrap.min.js"></script>
+          {%if h.check_access('app_edit', data_dict={'owner_id' : c.owner}) or c.user==c.owner %}
+          <a class='btn btn-primary btn-small media-edit' href="/apps/update?id={{c.id}}" ><span class="fa fa-pencil" > </span> {{_('Edit')}}</a>
+           
+            <noscript><a class='btn btn-primary btn-small media-delete' href="'/apps/delete?id={{c.id}}'" data-bb="confirm"><span class="fa fa-trash" > </span> {{_('Delete')}}</a> </noscript>
 
           <a class='btn btn-primary btn-small media-delete' href="#" data-bb="confirm" onclick="bootbox.confirm('{{_("Are you sure?")}}', function(result){if(result){window.location.href='/apps/delete?id={{c.id}}';}})"><span class="fa fa-trash" > </span> {{_('Delete')}}</a>
-      	  {%endif%}
+
+        {%endif%}
+        <script type="text/javascript">
+                           function opendialog(){
+                             bootbox.dialog({
+                                  title: "{{_('Error report')}}",
+                                  message: "<form method='post' action='/apps/report'><fieldset>{{_('Report app issue')}}</fieldset>" +
+                                      "<input type='text' name='app_id' value='{{c.id}}' style='display:none' >" +
+                                      "<textarea rows='4' name='report_text' placeholder='{{_('Error description')}}' style='width:100%;'></textarea>" +
+                                      "<button type='submit' class='btn btn-primary'> {{_('Send')}}</button>" +
+                                      "</form>",
+                                  }
+                              
+                          );}
+        </script>
+        {%if c.userobj and h.reported_by_user(c.userobj.id, c.id)%}
+
+          <a class='btn btn-primary btn-small media-delete' href="#" data-bb="custom_form" onclick="opendialog()"><span class="fa fa-exclamation" > </span> {{_('Report problem')}}</a>
+        
+        {%endif%}
       </form>
-      <h1> Comments: </h1>
+      
+     
+          {%if c.userobj %}
+      <noscript>
+      <form method="get" action="/apps/report">
+        <fieldset>{{_('Report app issue')}}</fieldset>
+        <input type='text' name="app_id" value="{{c.id}}" style="display:none" >
+        <textarea rows="4" name="report_text" placeholder="{{_('Error description')}}" style="width:100%;"></textarea>
+        <button type="submit" class="btn btn-primary"> {{_('Send')}}</button>
+      <form>{%endif%}
+      </noscript>
+      <hr>
+
+      {% snippet "related/snippets/comments2.html", data = [c.id, c.user, c.id, c.userobj.id] %}
+    
+
     {% else %}
       {{super()}}
     {%endif%}
@@ -324,16 +408,24 @@ end of form
           {{ _('Only show featured items') }}
         </label>
       </div-->
-      {% if c.priv_private %}
-      <div class="control-group">
-        <label for="field-private" class="checkbox">
-          <input type="checkbox" id="field-private" name="private" {% if c.filters.get('private') == 'on' %} checked="checked"{% endif %}></input>
-          {{ _('Only show private items') }}
-        </label>
-      </div>
-      {% endif %}
+      {% if h.is_admin() %}
+      
+      <input type="checkbox" id="field-private" name="private" {% if c.filters.get('private') == 'on' %} checked="checked"{% endif %}> {{ _('Only show private items') }}</input>
+         
+ {% endif %}
+     
+     {% if request.url.split("?")[1] %}
+                {% for i in request.url.split("?")[1].split("&") %}
+                {% if i.split('=')[0] == 'app_name' %}
+                   <input id="{{i.split('=')[0]}}" type="text" name="{{i.split('=')[0]}}" value="{{i.split('=')[1]}}" style="display: none;"/> {%endif%}
+                {%endfor%}
+              {%endif%}
       <div class="form-actions">
+
         <button class="btn btn-primary">{{ _('Apply') }}</button>
+        <a class="btn" href="/apps">{{ _('Cancel') }}</a>
+          
+
         </div>
     </form>
   </section>

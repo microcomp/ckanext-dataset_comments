@@ -182,7 +182,7 @@ class CommentsController(base.BaseController):
                    'for_view': True}
 
         try:
-            logic.check_access('app_editall', context)
+            logic.check_access('commets_admin', context)
         except logic.NotAuthorized:
             base.abort(401, _('Not authorized to see this page'))
 
