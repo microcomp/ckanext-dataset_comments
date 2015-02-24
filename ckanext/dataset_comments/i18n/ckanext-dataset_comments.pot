@@ -1,0 +1,413 @@
+# Translations template for ckanext-dataset_comments.
+# Copyright (C) 2015 ORGANIZATION
+# This file is distributed under the same license as the
+# ckanext-dataset_comments project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ckanext-dataset_comments 1.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2015-02-24 08:20+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: ckanext/dataset_comments/comments.py:127
+msgid "Not authorized to report, please login first"
+msgstr ""
+
+#: ckanext/dataset_comments/comments.py:187
+msgid "Not authorized to see this page"
+msgstr ""
+
+#: ckanext/dataset_comments/comments.py:406
+#: ckanext/dataset_comments/comments.py:432
+msgid "Komentár obsahoval nevhodný obsah a bol odstránený správcom."
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/base.html:3
+msgid "Administration"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/base.html:8
+msgid "Sysadmins"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/base.html:9
+msgid "Config"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/base.html:10
+msgid "Comment Admin"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/index.html:15
+msgid "What are sysadmins?"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/index.html:19
+msgid ""
+"\n"
+"        <p>A sysadmin is someone that has full control over a CKAN instance.\n"
+"          You can only add CKAN sysadmins via the <code>sysadmin</code> "
+"paster\n"
+"          command.</p>\n"
+"      "
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/index.html:24
+msgid "Read the documentation"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:6
+#: ckanext/dataset_comments/templates/comments/admin.html:10
+#: ckanext/dataset_comments/templates/comments/admin.html:17
+#: ckanext/dataset_comments/templates/package/resource_read.html:28
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:22
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:25
+msgid "Comments"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:33
+msgid "comments found"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:67
+#: ckanext/dataset_comments/templates/comments/admin.html:69
+msgid "delete"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:70
+#: ckanext/dataset_comments/templates/comments/admin.html:72
+msgid "restore"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:105
+#: ckanext/dataset_comments/templates/related/dashboard.html:366
+msgid "Filter Results"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:110
+#: ckanext/dataset_comments/templates/related/dashboard.html:386
+msgid "Filter by type"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:112
+msgid "All"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:113
+msgid "Deleted"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:114
+msgid "Reported"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:115
+msgid "Public"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:120
+#: ckanext/dataset_comments/templates/related/dashboard.html:396
+msgid "Sort by"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:122
+#: ckanext/dataset_comments/templates/related/dashboard.html:388
+#: ckanext/dataset_comments/templates/related/dashboard.html:398
+msgid "Default"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:123
+msgid "Newest"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:124
+msgid "Oldest"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:130
+msgid "Username"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:135
+msgid "Search text"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:145
+#: ckanext/dataset_comments/templates/related/dashboard.html:425
+msgid "Apply"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/comments/admin.html:146
+msgid "Reset"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/package/resource_read.html:15
+#: ckanext/dataset_comments/templates/package/resource_read.html:18
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:9
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:12
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:13
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:16
+msgid "New comment"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/package/resource_read.html:22
+#: ckanext/dataset_comments/templates/package/resource_read.html:201
+#: ckanext/dataset_comments/templates/package/resource_read.html:216
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:16
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:195
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:210
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:20
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:211
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:226
+msgid "Post comment"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/package/resource_read.html:49
+#: ckanext/dataset_comments/templates/package/resource_read.html:165
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:43
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:159
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:45
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:176
+msgid "show"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/package/resource_read.html:110
+#: ckanext/dataset_comments/templates/package/resource_read.html:153
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:104
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:147
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:119
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:163
+msgid "User(s) liked this."
+msgstr ""
+
+#: ckanext/dataset_comments/templates/package/resource_read.html:121
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:115
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:129
+msgid "reply"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/package/resource_read.html:124
+#: ckanext/dataset_comments/templates/package/resource_read.html:163
+#: ckanext/dataset_comments/templates/package/resource_read.html:229
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:118
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:157
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:223
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:132
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:174
+msgid "hide"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/package/resource_read.html:126
+#: ckanext/dataset_comments/templates/package/resource_read.html:169
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:120
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:163
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:134
+msgid "report"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/package/resource_read.html:129
+#: ckanext/dataset_comments/templates/package/resource_read.html:137
+#: ckanext/dataset_comments/templates/package/resource_read.html:175
+#: ckanext/dataset_comments/templates/package/resource_read.html:183
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:123
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:131
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:169
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:177
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:139
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:147
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:183
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:191
+msgid "Like this"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/package/resource_read.html:137
+#: ckanext/dataset_comments/templates/package/resource_read.html:183
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:131
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:177
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:147
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:191
+msgid "Dislike this"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/package/resource_read.html:197
+#: ckanext/dataset_comments/templates/package/resource_read.html:212
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:191
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:206
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:222
+msgid "Reply"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:13
+msgid "Apps"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:15
+#: ckanext/dataset_comments/templates/related/dashboard.html:25
+#: ckanext/dataset_comments/templates/related/dashboard.html:160
+msgid "Apps & Ideas"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:21
+#: ckanext/dataset_comments/templates/related/dashboard.html:23
+#: ckanext/dataset_comments/templates/related/dashboard.html:156
+msgid "Applications"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:83
+msgid "The form contains invalid entries:"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:115
+#: ckanext/dataset_comments/templates/related/dashboard.html:122
+msgid "Title"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:115
+#: ckanext/dataset_comments/templates/related/dashboard.html:122
+msgid "My Related Item"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:116
+#: ckanext/dataset_comments/templates/related/dashboard.html:123
+#: ckanext/dataset_comments/templates/related/dashboard.html:250
+msgid "URL"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:116
+#: ckanext/dataset_comments/templates/related/dashboard.html:123
+msgid "http://example.com/"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:117
+#: ckanext/dataset_comments/templates/related/dashboard.html:124
+msgid "Image URL"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:117
+#: ckanext/dataset_comments/templates/related/dashboard.html:124
+msgid "http://example.com/image.png"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:118
+#: ckanext/dataset_comments/templates/related/dashboard.html:125
+#: ckanext/dataset_comments/templates/related/dashboard.html:226
+msgid "Description"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:118
+#: ckanext/dataset_comments/templates/related/dashboard.html:125
+msgid "A little information about the item..."
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:120
+#: ckanext/dataset_comments/templates/related/dashboard.html:127
+#: ckanext/dataset_comments/templates/related/dashboard.html:259
+msgid "Datasets"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:120
+#: ckanext/dataset_comments/templates/related/dashboard.html:127
+msgid "eg. default"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:137
+msgid "Save"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:199
+msgid "Search"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:228
+#: ckanext/dataset_comments/templates/related/dashboard.html:236
+#: ckanext/dataset_comments/templates/related/dashboard.html:244
+#: ckanext/dataset_comments/templates/related/dashboard.html:252
+#: ckanext/dataset_comments/templates/related/dashboard.html:253
+msgid "no data"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:234
+msgid "Date of creation"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:242
+msgid "Author"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:268
+msgid "Status"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:281
+msgid "Edit"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:283
+#: ckanext/dataset_comments/templates/related/dashboard.html:285
+msgid "Delete"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:285
+msgid "Are you sure?"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:291
+msgid "Error report"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:292
+#: ckanext/dataset_comments/templates/related/dashboard.html:312
+msgid "Report app issue"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:294
+#: ckanext/dataset_comments/templates/related/dashboard.html:314
+msgid "Error description"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:295
+#: ckanext/dataset_comments/templates/related/dashboard.html:315
+msgid "Send"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:303
+msgid "Report problem"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:347
+msgid "Image"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:356
+msgid "What are applications?"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:358
+msgid ""
+"\n"
+"        These are applications built with the datasets as well as ideas for\n"
+"        things that could be done with them.\n"
+"      "
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:408
+msgid "Only show featured items"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:413
+msgid "Only show private items"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/related/dashboard.html:426
+msgid "Cancel"
+msgstr ""
+
