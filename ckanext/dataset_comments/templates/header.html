@@ -68,15 +68,16 @@ function home_button(){
 	</script>
 			{%endif%}
 	<!-- {{c.controller}} -->
-	{% elif c.controller == 'group' %}
+	{% elif c.controller == 'group'%}
 
-	{%if c.action == 'activity' %}
-	{%else%}
-		<link rel="stylesheet" type="text/css" href="/box.css" />
-		 <script>
-	 window.onload =  home_button
-	</script>
-	{%endif%}
+		{#%if c.action != 'activity' or c.action != 'read' %#}
+		
+			<!--link rel="stylesheet" type="text/css" href="/box.css" /-->
+		<script>
+		xxx
+		 window.onload =  home_button
+		</script>
+		{#%endif%#}
 	<!-- {{c.controller}} -->
 {%elif c.controller == 'user'%}
 	{%if c.action == 'dashboard_organizations' %}
@@ -157,7 +158,6 @@ function home_button(){
 	</script>
 {%endif%}
 
+
 {% endblock %}
-
-
 
