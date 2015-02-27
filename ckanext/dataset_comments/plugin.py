@@ -29,6 +29,11 @@ class DatasetCommentsPlugin(plugins.SingletonPlugin):
         map.connect('admin_restore', '/comments/restore', action='AdminRestoreComment', controller='ckanext.dataset_comments.comments:CommentsController')
 
         map.connect('moderator_v', '/admin/comments', action='AdminList', controller='ckanext.dataset_comments.comments:CommentsController')
+        map.connect('moderator_page', '/admin', action='AdminPage', controller='ckanext.dataset_comments.comments:CommentsController')
+
+        map.connect('comment_new_api', '/custom_apis/comment/new', action='NewCommentApi', controller='ckanext.dataset_comments.comments:CommentsController')
+        map.connect('comment_del_api', '/custom_apis/comment/del', action='DelCommentApi', controller='ckanext.dataset_comments.comments:CommentsController')
+        
         return map
     def update_config(self, config):
         toolkit.add_template_directory(config, 'templates')
@@ -38,4 +43,8 @@ class DatasetCommentsPlugin(plugins.SingletonPlugin):
                 'username': comments.GetUsername,
                 'list_children': comments.ListChildren,
                 'editor': comments.Editor,
-                'is_app': comments.IsApp }
+                'is_app': comments.IsApp,
+                'admin_or_moderator': comments.admin_or_moderator, 
+                'comment_admin': comments.comment_admin,
+                'tag_admin': comments.tag_admin,
+                'report_admin': comments.report_admin }

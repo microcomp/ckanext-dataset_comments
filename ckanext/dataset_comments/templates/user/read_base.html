@@ -1,0 +1,9 @@
+{% ckan_extends %}
+{% block content_primary_nav %}
+  {{super()}}
+{% if h.admin_or_moderator() %}
+<li>
+	<a href="/admin"> {{_('Administration')}}</a>
+</li>
+{%endif%}
+{% endblock %}

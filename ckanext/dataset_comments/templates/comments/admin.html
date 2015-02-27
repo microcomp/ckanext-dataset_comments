@@ -48,13 +48,13 @@
       	<div class="dataset-content">
       		<h3 class="dataset-heading">{{h.username(comment.user_id)}}</h3>
       		<h4> {{comment.date}}, {{_(comment.pub)}}, 
-      			<a href="
+      			
       			{% if h.is_app(comment.dataset_id) %}
-      				/apps/detail?id={{comment.dataset_id}}
-      			{%else%}
-      				/dataset/{{comment.dataset_id}}
+      				<a href="/apps/detail?id={{comment.dataset_id}}"> URL </a>
+      			{%elif comment.dataset_id != 'import' %}
+      				<a href="/dataset/{{comment.dataset_id}}"> URL </a>
       			{%endif%}
-      			"> URL </a>
+      			
 
       		</h4>
           
@@ -65,11 +65,13 @@
           </p>
           {%if comment.pub == 'public'%}
                       <a href="/comments/delete?id={{comment.id}}&{{data}}"><i class='fa fa-close'></i>{{_('delete')}}</a>
-              {%elif comment.pub == 'reported'%}
+              {%elif comment.pub == 'reported' %}
                       <a href="/comments/delete?id={{comment.id}}&{{data}}"><i class='fa fa-close'></i>{{_('delete')}}</a>
                       <a href="/comments/restore?id={{comment.id}}&{{data}}"><i class='fa fa-check'></i>{{_('restore')}}</a>
               {%else%}
+                  {%if comment.dataset_id != 'import' %}
                      <a href="/comments/restore?id={{comment.id}}&{{data}}"><i class='fa fa-check'></i>{{_('restore')}}</a>
+                  {%endif%}
               {%endif%}
       	</div>
       </li>

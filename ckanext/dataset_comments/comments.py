@@ -13,13 +13,14 @@ import ckan.plugins as p
 from ckan.common import _, c, g
 #import ckan.lib.app_globals.Globals as g
 import ckan.plugins.toolkit as toolkit
-
+import json
 import time
 import uuid
 import comments_db
 import logging
 import ckan.logic
 import __builtin__
+import datetime
 
 _check_access = logic.check_access
 def IsApp(id):
@@ -116,6 +117,12 @@ def report_comments(context, data_dict):
     return {"status":"success"}
 
 class CommentsController(base.BaseController):
+    def AdminPage(self):
+        if admin_or_moderator():
+            return base.render("admin/pages.html") 
+        else:
+            base.abort(401, _('Not authorized to report, please login first'))
+        pass
     def ReportComment(self):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -381,7 +388,91 @@ class CommentsController(base.BaseController):
         dataset_id = get_comments(context, data_dict)[0].dataset_id
         return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
 
+    def NewCommentApi(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        #logging.warning(context['user'])
+        # new table 
+        # ID, sum, IP, apikey, blocking_date, until
+        # unblock by admin ... 
+        #/custom_apis/comment/new?api_key=<API_KEY>&comment_text=<TEXT>&date=<DATUM>&comment_id=<id komentaru>&author=<login>
 
+        
+        API_KEY = base.request.params.get('api_key', '')
+        user_id = ""
+        user_id = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
+        if user_id:
+            user_id = user_id.id
+        else:
+            return json.dumps({"help": "new comment","sucess": False, "result":  _("invalid API key")}, encoding='utf8')
+        if len(user_id) < 1:
+            return json.dumps({"help": "new comment","sucess": False, "result":  _("invalid API key")}, encoding='utf8')
+
+        
+        id = base.request.params.get('comment_id','')
+        date = base.request.params.get('date','')
+        date = datetime.datetime.fromtimestamp(int(date)).strftime('%Y/%m/%d %H:%M:%S')
+
+        text = base.request.params.get('comment_text','')
+        dataset_id = "import"
+        pub = "private"
+        user_id = base.request.params.get('author','')
+
+
+        #author=<login>
+
+        text = " ".join(text.split(" "))
+        text = text.replace('\r\n', '<br />')
+        text = text.split('<br />')
+        text2 = []
+        for i in range(len(text)):
+            if text[i] != '' and text[i] != ' ':
+                text2.append(text[i])
+
+        text = "<br />".join(text2)
+
+        if len(text) < 5:
+            return json.dumps({"help": "new comment","sucess": False, "result":  _("comment too short")}, encoding='utf8')
+        
+        parent = base.request.params.get('parent_id','') 
+
+        data_dict = {'id': id, 'user_id':user_id, 
+                    'date': date, 'pub': pub, 
+                    'dataset_id': dataset_id,
+                    'comment_text': text, 'parent': parent}
+
+        new_comment(context, data_dict)
+        model.Session.commit()
+        url = "dataset/"+dataset_id
+        return json.dumps({"help": "new comment","sucess": True, "result":  text}, encoding='utf8')
+
+    def DelCommentApi(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+
+        API_KEY = base.request.params.get('api_key', '')
+        comment_id = base.request.params.get('comment_id', '')
+
+        user_id = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
+        if user_id:
+            user_id = user_id.id
+        else:
+            return json.dumps({"help": "del comment","sucess": False, "result":  _("invalid API key")}, encoding='utf8')
+
+
+
+        data_dict = {'id': comment_id}
+
+        try:
+            logic.check_access('app_editall', context)
+            mod_comments(context, data_dict)
+            return json.dumps({"help": "del comment","sucess": True, "result":  _("comment deleted")}, encoding='utf8')
+        except logic.NotAuthorized:
+            return json.dumps({"help": "del comment","sucess": False, "result":  _("not authorized")}, encoding='utf8')
+
+        return
 
 def ListComments(id):
     context = {'model': model, 'session': model.Session,
@@ -411,6 +502,8 @@ def ListComments(id):
 def GetUsername(user_id):
     username = model.Session.query(model.User) \
                 .filter(model.User.id == user_id).first()
+    if username == None:
+        return user_id
     return username.name
 def ListChildren(id, comment_id):
     context = {'model': model, 'session': model.Session,
@@ -452,5 +545,62 @@ def AdminCommentList():
     comments = sorted(comments, key=lambda comments: comments.date)
 
     return comments
+
+def admin_or_moderator():
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    try:
+        logic.check_access('app_editall', context)
+        return True
+    except logic.NotAuthorized:
+        pass
+
+    try:
+        logic.check_access('tags_admin', context)
+        return True
+    except Exception, e:
+        pass
+    try:
+        logic.check_access('commets_admin', context)
+        return True
+    except Exception, e:
+        pass
+
+    return False
+def comment_admin():
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    try:
+        logic.check_access('commets_admin', context)
+        return True
+    except logic.NotAuthorized:
+        return False
+    return False
+def tag_admin():
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    try:
+        logic.check_access('tags_admin', context)
+        return True
+    except logic.NotAuthorized:
+        return False
+    return False
+def report_admin():
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    try:
+        logic.check_access('app_editall', context)
+        return True
+    except logic.NotAuthorized:
+        return False
+    return False
+
+
+
+
 
 
