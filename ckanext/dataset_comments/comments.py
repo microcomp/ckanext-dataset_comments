@@ -556,6 +556,7 @@ def admin_or_moderator():
     except logic.NotAuthorized:
         pass
 
+
     try:
         logic.check_access('tags_admin', context)
         return True
@@ -563,6 +564,12 @@ def admin_or_moderator():
         pass
     try:
         logic.check_access('commets_admin', context)
+        return True
+    except Exception, e:
+        pass
+
+    try:
+        logic.check_access('storage_usage', context)
         return True
     except Exception, e:
         pass
@@ -594,6 +601,17 @@ def report_admin():
                'for_view': True}
     try:
         logic.check_access('app_editall', context)
+        return True
+    except logic.NotAuthorized:
+        return False
+    return False
+
+def storage_admin():
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    try:
+        logic.check_access('storage_usage', context)
         return True
     except logic.NotAuthorized:
         return False

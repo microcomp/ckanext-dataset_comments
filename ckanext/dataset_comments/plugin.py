@@ -47,4 +47,6 @@ class DatasetCommentsPlugin(plugins.SingletonPlugin):
                 'admin_or_moderator': comments.admin_or_moderator, 
                 'comment_admin': comments.comment_admin,
                 'tag_admin': comments.tag_admin,
-                'report_admin': comments.report_admin }
+                'report_admin': comments.report_admin,
+                'storage_admin': comments.storage_admin }
+                

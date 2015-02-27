@@ -1,9 +1,11 @@
-{% extends "user/read.html" %}
+{% extends "page.html" %}
 
-{% block primary_content_inner %}
-  
-{% endblock %}
-
-{% block secondary_content %}
-  
+{% block primary_content%}
+  <!--ul!--><h2>{{_('Admin pages')}} </h2>
+      {% if h.comment_admin() %}<h3> {{_('Comments')}}: <a href="admin/comments"> URL</a></h3>{%endif%}
+    {% if h.tag_admin() %}<h3> {{_('Tags')}}:<a href="admin/tags"> URL</a></h3>{%endif%}
+    {% if h.report_admin() %}<h3> {{_('Reports')}}: <a href="admin/reports"> URL</a></h3>  {%endif%}
+    
+    {% if h.storage_admin() %}<h3> {{_('Storage Administration')}}: <a href="admin/storage"> URL</a></h3>  {%endif%}
+  <p><br /> </p>
 {% endblock %}
