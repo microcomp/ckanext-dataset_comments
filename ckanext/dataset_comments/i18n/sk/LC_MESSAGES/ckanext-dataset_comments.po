@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-dataset_comments 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-24 08:20+0100\n"
+"POT-Creation-Date: 2015-02-27 15:17+0100\n"
 "PO-Revision-Date: 2015-02-24 08:21+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: sk <LL@li.org>\n"
@@ -19,26 +19,46 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/dataset_comments/comments.py:127
+#: ckanext/dataset_comments/comments.py:124
+#: ckanext/dataset_comments/comments.py:134
 msgid "Not authorized to report, please login first"
 msgstr "Nemáte povolenie nahlasovať, najprv si prihláste prosím."
 
-#: ckanext/dataset_comments/comments.py:187
+#: ckanext/dataset_comments/comments.py:194
 msgid "Not authorized to see this page"
 msgstr "Nemáte povolenie na zobrazenie tejto stránky."
 
-#: ckanext/dataset_comments/comments.py:406
-#: ckanext/dataset_comments/comments.py:432
+#: ckanext/dataset_comments/comments.py:408
+#: ckanext/dataset_comments/comments.py:410
+#: ckanext/dataset_comments/comments.py:462
+msgid "invalid API key"
+msgstr "nesprávny API kľúč"
+
+#: ckanext/dataset_comments/comments.py:436
+msgid "comment too short"
+msgstr "komentár príliš krátky"
+
+#: ckanext/dataset_comments/comments.py:471
+msgid "comment deleted"
+msgstr "komentár vymazaný"
+
+#: ckanext/dataset_comments/comments.py:473
+msgid "not authorized"
+msgstr "nie ste autorizovaný"
+
+#: ckanext/dataset_comments/comments.py:497
+#: ckanext/dataset_comments/comments.py:525
 msgid "Komentár obsahoval nevhodný obsah a bol odstránený správcom."
 msgstr "Komentár obsahoval nevhodný obsah a bol odstránený správcom."
 
 #: ckanext/dataset_comments/templates/admin/base.html:3
+#: ckanext/dataset_comments/templates/user/read_base.html:6
 msgid "Administration"
 msgstr "Administrácia"
 
 #: ckanext/dataset_comments/templates/admin/base.html:8
 msgid "Sysadmins"
-msgstr "Systémový administrátori"
+msgstr "Systémoví administrátori"
 
 #: ckanext/dataset_comments/templates/admin/base.html:9
 msgid "Config"
@@ -67,6 +87,11 @@ msgstr ""
 msgid "Read the documentation"
 msgstr "Čítať dokumentáciu"
 
+#: ckanext/dataset_comments/templates/admin/pages.html:4
+msgid "Admin pages"
+msgstr "Administrátorské nástroje"
+
+#: ckanext/dataset_comments/templates/admin/pages.html:5
 #: ckanext/dataset_comments/templates/comments/admin.html:6
 #: ckanext/dataset_comments/templates/comments/admin.html:10
 #: ckanext/dataset_comments/templates/comments/admin.html:17
@@ -75,6 +100,18 @@ msgstr "Čítať dokumentáciu"
 #: ckanext/dataset_comments/templates/related/snippets/comments2.html:25
 msgid "Comments"
 msgstr "Komentáre"
+
+#: ckanext/dataset_comments/templates/admin/pages.html:6
+msgid "Tags"
+msgstr "Tagy"
+
+#: ckanext/dataset_comments/templates/admin/pages.html:7
+msgid "Reports"
+msgstr "Reporty"
+
+#: ckanext/dataset_comments/templates/admin/pages.html:9
+msgid "Storage Administration"
+msgstr "Riadenie úložísk"
 
 #: ckanext/dataset_comments/templates/comments/admin.html:33
 msgid "comments found"
@@ -86,69 +123,69 @@ msgid "delete"
 msgstr "vymazať"
 
 #: ckanext/dataset_comments/templates/comments/admin.html:70
-#: ckanext/dataset_comments/templates/comments/admin.html:72
+#: ckanext/dataset_comments/templates/comments/admin.html:73
 msgid "restore"
 msgstr "obnoviť"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:105
+#: ckanext/dataset_comments/templates/comments/admin.html:107
 #: ckanext/dataset_comments/templates/related/dashboard.html:366
 msgid "Filter Results"
 msgstr "Filtrovať výsledky"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:110
+#: ckanext/dataset_comments/templates/comments/admin.html:112
 #: ckanext/dataset_comments/templates/related/dashboard.html:386
 msgid "Filter by type"
 msgstr "Filtrovať podľa typu"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:112
+#: ckanext/dataset_comments/templates/comments/admin.html:114
 msgid "All"
 msgstr "Všetky"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:113
+#: ckanext/dataset_comments/templates/comments/admin.html:115
 msgid "Deleted"
 msgstr "Vymazané"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:114
+#: ckanext/dataset_comments/templates/comments/admin.html:116
 msgid "Reported"
 msgstr "Nahlásené"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:115
+#: ckanext/dataset_comments/templates/comments/admin.html:117
 msgid "Public"
 msgstr "Verejné"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:120
+#: ckanext/dataset_comments/templates/comments/admin.html:122
 #: ckanext/dataset_comments/templates/related/dashboard.html:396
 msgid "Sort by"
 msgstr "Zoradiť podľa"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:122
+#: ckanext/dataset_comments/templates/comments/admin.html:124
 #: ckanext/dataset_comments/templates/related/dashboard.html:388
 #: ckanext/dataset_comments/templates/related/dashboard.html:398
 msgid "Default"
 msgstr "štandardne"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:123
+#: ckanext/dataset_comments/templates/comments/admin.html:125
 msgid "Newest"
 msgstr "Najnovšie"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:124
+#: ckanext/dataset_comments/templates/comments/admin.html:126
 msgid "Oldest"
 msgstr "Najstaršie"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:130
+#: ckanext/dataset_comments/templates/comments/admin.html:132
 msgid "Username"
 msgstr "Meno používateľa"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:135
+#: ckanext/dataset_comments/templates/comments/admin.html:137
 msgid "Search text"
 msgstr "Hladať text"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:145
+#: ckanext/dataset_comments/templates/comments/admin.html:147
 #: ckanext/dataset_comments/templates/related/dashboard.html:425
 msgid "Apply"
 msgstr "Použiť"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:146
+#: ckanext/dataset_comments/templates/comments/admin.html:148
 msgid "Reset"
 msgstr "Resetovať"
 
