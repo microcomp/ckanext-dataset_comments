@@ -616,6 +616,13 @@ def storage_admin():
     except logic.NotAuthorized:
         return False
     return False
+import hashlib
+def md5_create(input):
+    input = input.encode('utf-8')
+    result = hashlib.md5()
+    result.update(input)
+
+    return result.hexdigest()
 
 
 

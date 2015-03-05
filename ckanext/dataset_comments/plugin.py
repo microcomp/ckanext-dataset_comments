@@ -48,5 +48,6 @@ class DatasetCommentsPlugin(plugins.SingletonPlugin):
                 'comment_admin': comments.comment_admin,
                 'tag_admin': comments.tag_admin,
                 'report_admin': comments.report_admin,
-                'storage_admin': comments.storage_admin }
+                'storage_admin': comments.storage_admin,
+                'md5_create': comments.md5_create }
                 
