@@ -10,8 +10,9 @@
 
 
 {% if c.userobj %}
+<h3 style="text-align: center;"> <button id="new_fomment_button" class="mybutton" onclick="$('#new_fomment_button').hide();$('#new_fomment_form').show();">{{_('New comment')}} </button></h3>
 
-<form class="form-horizontal" method="post" action="/dataset/{{c.pkg.id}}/comments/new">
+<form class="form-horizontal" method="post" action="/dataset/{{current_package_id}}/comments/new" style="display:none" id="new_fomment_form">
 <legend>{{ _('New comment') }}</legend>
 
   <div class="controls" style="margin-left:0px;">                     
@@ -20,13 +21,33 @@
 
   <div class="controls" style="margin-left:0px;">
     <button id="submit" name="submit" class="btn btn-default">{{_('Post comment')}}</button>
-    <textarea id="textarea" name="dataset_id" style="display:none;">{{c.pkg.id}}</textarea>
+    <textarea id="textarea" name="dataset_id" style="display:none;">{{current_package_id}}</textarea>
   </div>
 </form>
-{%endif%}
 
+
+
+<noscript>
+<form class="form-horizontal" method="post" action="/dataset/{{current_package_id}}/comments/new">
+<legend>{{ _('New comment') }}</legend>
+
+  <div class="controls" style="margin-left:0px;">                     
+    <textarea id="textarea" name="comment_text" style="resize: vertical;width: 98%;" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"> {{ _('New comment') }}...</textarea>
+  </div>
+
+  <div class="controls" style="margin-left:0px;">
+    <button id="submit" name="submit" class="btn btn-default">{{_('Post comment')}}</button>
+    <textarea id="textarea" name="dataset_id" style="display:none;">{{current_package_id}}</textarea>
+  </div>
+</form>
+</noscript>
+{%endif%}
+{%set comments = h.list(c.pkg.id) %}
+{% if comments|length > 0 %}
   <h2>{{_('Comments')}}:</h2>
-{% for i in h.list(c.pkg.id) %}
+{%endif%}
+{% for i in  comments%}
+
 {%if i.pub == 'private' %}
 
 <div class="comments_1st" style="background-color:#D1D1D1;">
