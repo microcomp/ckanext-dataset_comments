@@ -18,7 +18,7 @@
   <!--ul!--><h2>{{_('Administrative tools')}} </h2>
   <p> {{_('According to your permissions assigned to your user account, you are allowed to use certain administrative tools. This tools provide extended functionality for managing content of CKAN.')}} </p>
   <p>{{_('The available administrative tools are:')}}</p>
-  <ul>
+  <ul style="list-style-type:none;">
     <li>{% if h.comment_admin() %}<h2 style="font-size: 1.3em;"> <a href="admin/comments"> <i class="fa fa-external-link" ></i> {{_('Comments administration')}} </a></h2>{%endif%}</li> 
     <li>{% if h.tag_admin() %}<h2 style="font-size: 1.3em;"><a href="admin/tags"> <i class="fa fa-external-link" ></i> {{_('Tags administration')}} </a></h2>{%endif%}</li>
     <li>{% if h.report_admin() %}<h2 style="font-size: 1.3em;"> <a href="admin/reports"><i class="fa fa-external-link" ></i>  {{_('Reported applications')}}</a></h2>  {%endif%}</li>
