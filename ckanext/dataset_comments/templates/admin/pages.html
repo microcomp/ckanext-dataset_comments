@@ -10,9 +10,15 @@
      <ul class="nav nav-tabs">
          <li ><a href="/user/{{c.userobj.name}}"><i class="icon-sitemap"></i> Datasety</a></li>
   		 <li><a href="/user/activity/{{c.userobj.name}}"><i class="icon-time"></i> Prehľad aktivít</a></li>
+       {%if h.management_installed() %}
+    <li>
+      <a href="/API_management"> {{_('API management')}}</a>
+    </li>
+    {%endif%}
 		<li class="active">
 			<a href="/admin"> Administration</a>
 		</li>
+    
 	</ul>
 </header>
   <!--ul!--><h2>{{_('Administrative tools')}} </h2>
@@ -87,7 +93,7 @@
 
           <dl>
             <dt class="key">{{ _('API Key') }} <span class="label" title="{{ _('This means only you can see this') }}">{{ _('Private') }}</span></dt>
-            <dd class="value"><code>{{ c.userobj.apikey }}</code></dd>
+            <dd class="value"><code>{{ c.userobj.apikey }}</code> {%if h.management_installed() %}<a href="/API_management/NewAPIKey?from={{ request.url }}"> <i class="fa fa-external-link" ></i> {{_('New API key')}} </a>    {%endif%}</dd>
           </dl>
 
         {% endblock %}

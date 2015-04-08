@@ -23,6 +23,15 @@ import __builtin__
 import datetime
 
 _check_access = logic.check_access
+def IsRes(id):
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    data_dict = {'related_id': id}
+    resource = model.Session.query(model.Resource) \
+                .filter(model.Resource.id == id).first()
+    return resource != None
+
 def IsApp(id):
     context = {'model': model, 'session': model.Session,
                'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -140,7 +149,16 @@ class CommentsController(base.BaseController):
         if IsApp(dataset_id):
             return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
         else:
-            return h.redirect_to(controller='package', action='read', id=dataset_id)
+            if IsRes(dataset_id):
+
+                resource = model.Session.query(model.Resource).filter(model.Resource.id == dataset_id).all()[0].resource_group_id
+                dts_id = model.Session.query(model.ResourceGroup).filter(model.ResourceGroup.id == resource).all()[0].package_id
+
+
+                return h.redirect_to(controller='package', action='resource_read', id=dts_id ,resource_id=dataset_id)
+            else:
+                return h.redirect_to(controller='package', action='read', id=dataset_id)
+            
 
 
     def AdminRestoreComment(self):
@@ -308,7 +326,14 @@ class CommentsController(base.BaseController):
         new_comment(context, data_dict)
         model.Session.commit()
         url = "dataset/"+dataset_id
-        return h.redirect_to(controller='package', action='read', id=dataset_id)
+        if IsRes(dataset_id):
+            resource = model.Session.query(model.Resource).filter(model.Resource.id == dataset_id).all()[0].resource_group_id
+            dts_id = model.Session.query(model.ResourceGroup).filter(model.ResourceGroup.id == resource).all()[0].package_id
+
+
+            return h.redirect_to(controller='package', action='resource_read', id=dts_id ,resource_id=dataset_id)
+        else:
+            return h.redirect_to(controller='package', action='read', id=dataset_id)
 
 
     def NewAppComment(self):
@@ -371,7 +396,14 @@ class CommentsController(base.BaseController):
             logging.warning('NotAuthorized')
         
         dataset_id = get_comments(context, data_dict)[0].dataset_id
-        return h.redirect_to(controller='package', action='read', id=dataset_id)
+        if IsRes(dataset_id):
+            resource = model.Session.query(model.Resource).filter(model.Resource.id == dataset_id).all()[0].resource_group_id
+            dts_id = model.Session.query(model.ResourceGroup).filter(model.ResourceGroup.id == resource).all()[0].package_id
+
+
+            return h.redirect_to(controller='package', action='resource_read', id=dts_id ,resource_id=dataset_id)
+        else:
+            return h.redirect_to(controller='package', action='read', id=dataset_id)
 
     def DeleteAppComment(self):
         context = {'model': model, 'session': model.Session,
@@ -396,7 +428,7 @@ class CommentsController(base.BaseController):
         # new table 
         # ID, sum, IP, apikey, blocking_date, until
         # unblock by admin ... 
-        #/custom_apis/comment/new?api_key=<API_KEY>&comment_text=<TEXT>&date=<DATUM>&comment_id=<id komentaru>&author=<login>
+        #/custom_api/comment/new?api_key=<API_KEY>&comment_text=<TEXT>&date=<DATUM>&comment_id=<id komentaru>&author=<login>
 
         
         API_KEY = base.request.params.get('api_key', '')
