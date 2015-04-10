@@ -2,12 +2,8 @@
 
 {%block primary_content %}
 {{super()}}
+
  <link href='/comments.css' type="text/css" rel='stylesheet'>
-
-
-
-
-
 
 {% if c.userobj %}
 <h3 style="text-align: center;"> <button id="new_fomment_button" class="mybutton" onclick="$('#new_fomment_button').hide();$('#new_fomment_form').show();">{{_('New comment')}} </button></h3>
@@ -46,6 +42,18 @@
 {% if comments|length > 0 %}
   <h2>{{_('Comments')}}:</h2>
 {%endif%}
+{% set error = request.url.split('?')%}
+{% if error|length >1 %}
+{% set msg = error[1].split("=")[1]%}
+{%if msg == "1"%}
+<div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  {{_('Comment too short')}}
+</div>
+
+{%endif%}
+{%endif%}
 {% for i in  comments%}
 
 {%if i.pub == 'private' %}
@@ -73,7 +81,7 @@
                 {%endif%}
             <ul>
                 <!-- remove this -->
-        {#% for j in h.list_children(c.pkg.id, i.id) %}
+        {#% for j in h.list_children(c.resource_id, i.id) %}
                 <div {% if j.pub != 'private' %}class="comments_2nd" {%else%}class="comments_2nd_priv" {%endif%}>
                 <div class="comment" id="comment_id">
                     <h3 {% if j.pub == 'private' %}style="color:#858585;" {%endif%}>{{h.username(j.user_id)}}</h3><p class="date" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}> {{j.date}}</p>
@@ -160,7 +168,7 @@ function show_form(id){
         {%endif%}
             <ul>
 
-            {% for j in h.list_children(c.pkg.id, i.id) %}
+            {% for j in h.list_children(c.resource_id, i.id) %}
                 <div {% if j.pub != 'private' %}class="comments_2nd" {%else%}class="comments_2nd_priv" {%endif%}>
                 <div class="comment" id="comment_id">
                     <h3 {% if j.pub == 'private' %}style="color:#858585;" {%endif%}>{{h.username(j.user_id)}}

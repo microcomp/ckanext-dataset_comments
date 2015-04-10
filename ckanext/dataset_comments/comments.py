@@ -10,6 +10,7 @@ import ckan.lib.base as base
 import ckan.lib.helpers as h
 import ckan.lib.navl.dictization_functions as df
 import ckan.plugins as p
+
 from ckan.common import _, c, g
 #import ckan.lib.app_globals.Globals as g
 import ckan.plugins.toolkit as toolkit
@@ -310,9 +311,11 @@ class CommentsController(base.BaseController):
                 text2.append(text[i])
 
         text = "<br />".join(text2)
-        if len(text) < 5:
-            base.redirect_to(controller='package', action='read', id=dataset_id, error='too_short')
+        errors = {}
+        errors['comment'] = ""
         
+            
+
         parent = base.request.params.get('parent_id','') 
 
         if parent == "":
@@ -323,6 +326,15 @@ class CommentsController(base.BaseController):
         			'dataset_id': dataset_id,
         			'comment_text': text, 'parent': parent}
         logging.warning(c.post_data)
+
+        if len(text) < 5:
+            errors['comment'] = 'Comment too short'
+            if IsRes(dataset_id):
+                resource = model.Session.query(model.Resource).filter(model.Resource.id == dataset_id).all()[0].resource_group_id
+                dts_id = model.Session.query(model.ResourceGroup).filter(model.ResourceGroup.id == resource).all()[0].package_id
+                return h.redirect_to(controller='package', action='resource_read', id=dts_id ,resource_id=dataset_id, error="1")
+            else:
+                return h.redirect_to(controller='package', action='read', id=dataset_id, error="1")
         new_comment(context, data_dict)
         model.Session.commit()
         url = "dataset/"+dataset_id
