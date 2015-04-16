@@ -40,6 +40,19 @@
 {%endif%}
 {%set comments = h.list(c.resource['id']) %}
 {% if comments|length > 0 %}
+{%set error = request.url.split('?')%}
+{% if error|length > 1 %}
+    {%set errormsg = error[1].split('=') %}
+    {%if errormsg|length > 1%}
+        {%if errormsg[1] == '1' %}
+            <div class="alert alert-danger" role="alert">
+              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span class="sr-only">Error:</span>
+              {{_('The comment is too short.')}}
+            </div>
+        {%endif%}
+    {%endif%}
+{%endif%}
   <h2>{{_('Comments')}}:</h2>
 {%endif%}
 {% set error = request.url.split('?')%}
