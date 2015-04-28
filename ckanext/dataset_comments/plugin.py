@@ -6,6 +6,9 @@ import json
 import os
 import logging
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 import ckan.logic
 import ckan.model as model
 from ckan.common import _, c
