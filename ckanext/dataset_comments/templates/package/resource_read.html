@@ -90,7 +90,7 @@
                 {% if h.editor() %}
                 <li style="color:#858585;"><a href="/dataset/comments/delete?id={{i.id}}" class="delete" style="color:#858585;"><i class='fa fa-remove'></i> {{_('show')}}</a></li>
                 {#%else%}
-                <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report')}}</a></li>#}
+                <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report inappropriate content')}}</a></li>#}
                 {%endif%}
             <ul>
                 <!-- remove this -->
@@ -113,7 +113,7 @@
                         {%endif%}
                     {%else%}
                     {%if c.userobj %}
-                        <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report')}}</a></li>
+                        <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report inappropriate content')}}</a></li>
                     {%endif%}
                     {%endif%}
                     <ul>
@@ -165,7 +165,7 @@ function show_form(id){
                 {% if h.editor() %}
                     <li><a href="/dataset/comments/delete?id={{i.id}}" class="delete" ><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
                 {%else%}
-                <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report')}}</a></li>
+                <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report inappropriate content')}}</a></li>
                 {%endif%}
                 {% if res['is'] == False %}
             <li><a href='/dataset/like?dataset_id={{c.pkg.id}}&comment_id={{i.id}}'><i class="fa fa-thumbs-o-up"></i> {{_('Like this')}}</a></li>
@@ -208,7 +208,7 @@ function show_form(id){
                         {%endif%}
                     {%else%}
                     {%if c.userobj %}
-                        <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report')}}</a></li>
+                        <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report inappropriate content')}}</a></li>
                     {%endif%}
                     {%endif%}
                     {%if c.userobj %}
