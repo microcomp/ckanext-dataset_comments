@@ -1,7 +1,8 @@
- {%set app_id = data[0] %}
+{%set app_id = data[0] %}
 {%set user = data[1] %}
 {%set id = data[2] %}
 {%set uid = data[3] %}
+{{user}}
  <link href='/comments.css' type="text/css" rel='stylesheet'>
 <style>
 
@@ -167,7 +168,7 @@ function show_form(id){
                 {% if h.editor() %}
                     <li><a href="/apps/comments/delete?id={{i.id}}" class="delete" ><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
                 {%else%}
-                <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report')}}</a></li>
+                <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report inappropriate content')}}</a></li>
                 {%endif%}
                  <li>{%if user %}
           {%set res = h.liked(uid, i.id) %}
