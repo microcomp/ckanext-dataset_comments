@@ -127,7 +127,24 @@ def report_comments(context, data_dict):
     return {"status":"success"}
 
 class CommentsController(base.BaseController):
+    def _setup_template_variables(self, context, data_dict):
+        try:
+            user_dict = logic.get_action('user_show')(context, data_dict)
+        except logic.NotFound:
+            abort(404, _('User not found'))
+        except logic.NotAuthorized:
+            abort(401, _('Not authorized to see this page'))
+        c.user_dict = user_dict
+        c.is_myself = user_dict['name'] == c.user
+        c.about_formatted = h.render_markdown(user_dict['about'])
+
     def AdminPage(self):
+        context = {'model': model, 'session': model.Session,
+                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
+                   'for_view': True}
+        data_dict = {"id":c.userobj.id}
+
+        self._setup_template_variables(context, data_dict)
         if admin_or_moderator():
             return base.render("admin/pages.html") 
         else:
