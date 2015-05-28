@@ -26,6 +26,7 @@
     <li>{% if h.tag_admin() %}<h2 style="font-size: 1.3em;"><a href="admin/tags"> <i class="fa fa-external-link" ></i> {{_('Tags administration')}} </a></h2>{%endif%}</li>
     <li>{% if h.report_admin() %}<h2 style="font-size: 1.3em;"> <a href="admin/reports"><i class="fa fa-external-link" ></i>  {{_('Reported applications')}}</a></h2>  {%endif%}</li>
     <li>{% if h.storage_admin() %}<h2 style="font-size: 1.3em;"> <a href="admin/storage"><i class="fa fa-external-link" ></i> {{_('Storage Administration')}} </a></h2>  {%endif%}</li>
+    <li>{% if h.sla_management() %}<h2 style="font-size: 1.3em;"> <a href="admin/sla"><i class="fa fa-external-link" ></i> {{_('SLA Administration')}} </a></h2>  {%endif%}</li>
   </ul>
   <p><br /> </p>
 {% endblock %}

@@ -52,5 +52,6 @@ class DatasetCommentsPlugin(plugins.SingletonPlugin):
                 'tag_admin': comments.tag_admin,
                 'report_admin': comments.report_admin,
                 'storage_admin': comments.storage_admin,
+                'sla_management' : comments.auth_sla_management,
                 'md5_create': comments.md5_create }
                 

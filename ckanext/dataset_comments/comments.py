@@ -677,6 +677,17 @@ def storage_admin():
     except logic.NotAuthorized:
         return False
     return False
+def auth_sla_management():
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    try:
+        logic.check_access('sla_management', context)
+        return True
+    except logic.NotAuthorized:
+        return False
+    return False
+
 import hashlib
 def md5_create(input):
     input = input.encode('utf-8')
