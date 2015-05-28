@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-dataset_comments 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-24 08:20+0100\n"
+"POT-Creation-Date: 2015-05-14 16:43+0100\n"
 "PO-Revision-Date: 2015-02-24 08:21+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: sk <LL@li.org>\n"
@@ -19,20 +19,42 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/dataset_comments/comments.py:127
+#: ckanext/dataset_comments/comments.py:134
+#: ckanext/dataset_comments/comments.py:144
 msgid "Not authorized to report, please login first"
 msgstr "Nemáte povolenie nahlasovať, najprv si prihláste prosím."
 
-#: ckanext/dataset_comments/comments.py:187
+#: ckanext/dataset_comments/comments.py:213
 msgid "Not authorized to see this page"
 msgstr "Nemáte povolenie na zobrazenie tejto stránky."
 
-#: ckanext/dataset_comments/comments.py:406
-#: ckanext/dataset_comments/comments.py:432
+#: ckanext/dataset_comments/comments.py:452
+#: ckanext/dataset_comments/comments.py:454
+#: ckanext/dataset_comments/comments.py:506
+msgid "invalid API key"
+msgstr "neplatný API kľúč"
+
+#: ckanext/dataset_comments/comments.py:480
+msgid "comment too short"
+msgstr "komentár príliš krátky"
+
+#: ckanext/dataset_comments/comments.py:515
+#, fuzzy
+#| msgid "comments found"
+msgid "comment deleted"
+msgstr "komentár vymazaný"
+
+#: ckanext/dataset_comments/comments.py:517
+msgid "not authorized"
+msgstr ""
+
+#: ckanext/dataset_comments/comments.py:541
+#: ckanext/dataset_comments/comments.py:569
 msgid "Komentár obsahoval nevhodný obsah a bol odstránený správcom."
 msgstr "Komentár obsahoval nevhodný obsah a bol odstránený správcom."
 
 #: ckanext/dataset_comments/templates/admin/base.html:3
+#: ckanext/dataset_comments/templates/user/read_base.html:6
 msgid "Administration"
 msgstr "Administrácia"
 
@@ -61,19 +83,118 @@ msgid ""
 "paster\n"
 "          command.</p>\n"
 "      "
-msgstr "<p>A sysadminb ma plnú kontrolu nad CKAN "instance.\n" " Môžete pridať sysadminov CKAN cez <code>sysadmin</code> "
-"paster\n 
+msgstr ""
+"\n"
+"       <p>A sysadminb ma plnú kontrolu nad CKAN  instance.\n"
+"       Môžete pridať sysadminov CKAN cez <code>sysadmin</code> paster\n"
+"         príkaz.</p>\n"
+"      "
 
 #: ckanext/dataset_comments/templates/admin/index.html:24
 msgid "Read the documentation"
 msgstr "Čítať dokumentáciu"
 
+#: ckanext/dataset_comments/templates/admin/pages.html:15
+msgid "API management"
+msgstr "API manažment"
+
+#: ckanext/dataset_comments/templates/admin/pages.html:24
+#, fuzzy
+#| msgid "Administration"
+msgid "Administrative tools"
+msgstr "Nástroje k administrácii"
+
+#: ckanext/dataset_comments/templates/admin/pages.html:25
+msgid ""
+"According to your permissions assigned to your user account, you are "
+"allowed to use certain administrative tools. This tools provide extended "
+"functionality for managing content of CKAN."
+msgstr ""
+"V závislosti od priradených práv k Vašemu profilu, Ste"
+"oprávnený pristupovať k určitým administrátorským nástrojom. Tieto nástroje poskytujú rozšírenú"
+"funkcionalitu pre manažovanie obsahu CKANu."
+
+#: ckanext/dataset_comments/templates/admin/pages.html:26
+msgid "The available administrative tools are:"
+msgstr "Dostupné administrátorske nástroje sú:"
+
+#: ckanext/dataset_comments/templates/admin/pages.html:28
+#, fuzzy
+#| msgid "Administration"
+msgid "Comments administration"
+msgstr "Administrácia komentárov"
+
+#: ckanext/dataset_comments/templates/admin/pages.html:29
+#, fuzzy
+#| msgid "Administration"
+msgid "Tags administration"
+msgstr "Administrácia tagov"
+
+#: ckanext/dataset_comments/templates/admin/pages.html:30
+#, fuzzy
+#| msgid "What are applications?"
+msgid "Reported applications"
+msgstr "Čo sú aplikácie?"
+
+#: ckanext/dataset_comments/templates/admin/pages.html:31
+#, fuzzy
+#| msgid "Administration"
+msgid "Storage Administration"
+msgstr "Administrácia"
+
+#: ckanext/dataset_comments/templates/admin/pages.html:53
+msgid "You have not provided a biography."
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/pages.html:55
+msgid "This user has no biography."
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/pages.html:72
+msgid "Open ID"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/pages.html:75
+#: ckanext/dataset_comments/templates/comments/admin.html:132
+msgid "Username"
+msgstr "Meno používateľa"
+
+#: ckanext/dataset_comments/templates/admin/pages.html:81
+msgid "Email"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/pages.html:81
+#: ckanext/dataset_comments/templates/admin/pages.html:95
+msgid "This means only you can see this"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/pages.html:81
+#: ckanext/dataset_comments/templates/admin/pages.html:95
+msgid "Private"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/pages.html:86
+msgid "Member Since"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/pages.html:90
+msgid "State"
+msgstr ""
+
+#: ckanext/dataset_comments/templates/admin/pages.html:95
+msgid "API Key"
+msgstr "API kľúč"
+
+#: ckanext/dataset_comments/templates/admin/pages.html:96
+msgid "New API kľúč"
+msgstr "Nový API kľúč"
+
 #: ckanext/dataset_comments/templates/comments/admin.html:6
 #: ckanext/dataset_comments/templates/comments/admin.html:10
 #: ckanext/dataset_comments/templates/comments/admin.html:17
-#: ckanext/dataset_comments/templates/package/resource_read.html:28
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:22
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:25
+#: ckanext/dataset_comments/templates/package/resource_read.html:56
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:54
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:60
 msgid "Comments"
 msgstr "Komentáre"
 
@@ -87,165 +208,183 @@ msgid "delete"
 msgstr "vymazať"
 
 #: ckanext/dataset_comments/templates/comments/admin.html:70
-#: ckanext/dataset_comments/templates/comments/admin.html:72
+#: ckanext/dataset_comments/templates/comments/admin.html:73
 msgid "restore"
 msgstr "obnoviť"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:105
+#: ckanext/dataset_comments/templates/comments/admin.html:107
 #: ckanext/dataset_comments/templates/related/dashboard.html:366
 msgid "Filter Results"
 msgstr "Filtrovať výsledky"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:110
+#: ckanext/dataset_comments/templates/comments/admin.html:112
 #: ckanext/dataset_comments/templates/related/dashboard.html:386
 msgid "Filter by type"
 msgstr "Filtrovať podľa typu"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:112
+#: ckanext/dataset_comments/templates/comments/admin.html:114
 msgid "All"
 msgstr "Všetky"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:113
+#: ckanext/dataset_comments/templates/comments/admin.html:115
 msgid "Deleted"
 msgstr "Vymazané"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:114
+#: ckanext/dataset_comments/templates/comments/admin.html:116
 msgid "Reported"
 msgstr "Nahlásené"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:115
+#: ckanext/dataset_comments/templates/comments/admin.html:117
 msgid "Public"
 msgstr "Verejné"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:120
+#: ckanext/dataset_comments/templates/comments/admin.html:122
 #: ckanext/dataset_comments/templates/related/dashboard.html:396
 msgid "Sort by"
 msgstr "Zoradiť podľa"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:122
+#: ckanext/dataset_comments/templates/comments/admin.html:124
 #: ckanext/dataset_comments/templates/related/dashboard.html:388
 #: ckanext/dataset_comments/templates/related/dashboard.html:398
 msgid "Default"
 msgstr "štandardne"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:123
+#: ckanext/dataset_comments/templates/comments/admin.html:125
 msgid "Newest"
 msgstr "Najnovšie"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:124
+#: ckanext/dataset_comments/templates/comments/admin.html:126
 msgid "Oldest"
 msgstr "Najstaršie"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:130
-msgid "Username"
-msgstr "Meno používateľa"
-
-#: ckanext/dataset_comments/templates/comments/admin.html:135
+#: ckanext/dataset_comments/templates/comments/admin.html:137
 msgid "Search text"
 msgstr "Hladať text"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:145
+#: ckanext/dataset_comments/templates/comments/admin.html:147
 #: ckanext/dataset_comments/templates/related/dashboard.html:425
 msgid "Apply"
 msgstr "Použiť"
 
-#: ckanext/dataset_comments/templates/comments/admin.html:146
+#: ckanext/dataset_comments/templates/comments/admin.html:148
 msgid "Reset"
 msgstr "Resetovať"
 
+#: ckanext/dataset_comments/templates/package/resource_read.html:9
+#: ckanext/dataset_comments/templates/package/resource_read.html:12
 #: ckanext/dataset_comments/templates/package/resource_read.html:15
-#: ckanext/dataset_comments/templates/package/resource_read.html:18
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:9
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:12
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:13
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:16
+#: ckanext/dataset_comments/templates/package/resource_read.html:28
+#: ckanext/dataset_comments/templates/package/resource_read.html:31
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:7
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:10
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:13
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:26
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:29
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:12
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:14
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:17
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:29
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:32
 msgid "New comment"
 msgstr "Nový komentár"
 
-#: ckanext/dataset_comments/templates/package/resource_read.html:22
-#: ckanext/dataset_comments/templates/package/resource_read.html:201
-#: ckanext/dataset_comments/templates/package/resource_read.html:216
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:16
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:195
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:210
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:20
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:211
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:226
+#: ckanext/dataset_comments/templates/package/resource_read.html:19
+#: ckanext/dataset_comments/templates/package/resource_read.html:35
+#: ckanext/dataset_comments/templates/package/resource_read.html:243
+#: ckanext/dataset_comments/templates/package/resource_read.html:258
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:17
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:33
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:228
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:243
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:21
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:36
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:248
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:263
 msgid "Post comment"
 msgstr "Odoslať komentár"
 
-#: ckanext/dataset_comments/templates/package/resource_read.html:49
-#: ckanext/dataset_comments/templates/package/resource_read.html:165
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:43
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:159
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:45
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:176
+#: ckanext/dataset_comments/templates/package/resource_read.html:51
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:49
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:55
+msgid "The comment is too short."
+msgstr "Komentár je príliš krátky."
+
+#: ckanext/dataset_comments/templates/package/resource_read.html:65
+msgid "Comment too short"
+msgstr "Komentár je príliš krátky."
+
+#: ckanext/dataset_comments/templates/package/resource_read.html:91
+#: ckanext/dataset_comments/templates/package/resource_read.html:207
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:76
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:192
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:82
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:213
 msgid "show"
 msgstr "ukázať"
 
-#: ckanext/dataset_comments/templates/package/resource_read.html:110
-#: ckanext/dataset_comments/templates/package/resource_read.html:153
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:104
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:147
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:119
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:163
+#: ckanext/dataset_comments/templates/package/resource_read.html:152
+#: ckanext/dataset_comments/templates/package/resource_read.html:195
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:137
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:180
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:156
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:200
 msgid "User(s) liked this."
 msgstr "použivateľom sa to páči."
 
-#: ckanext/dataset_comments/templates/package/resource_read.html:121
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:115
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:129
+#: ckanext/dataset_comments/templates/package/resource_read.html:163
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:148
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:166
 msgid "reply"
 msgstr "odpovedať"
 
-#: ckanext/dataset_comments/templates/package/resource_read.html:124
-#: ckanext/dataset_comments/templates/package/resource_read.html:163
-#: ckanext/dataset_comments/templates/package/resource_read.html:229
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:118
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:157
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:223
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:132
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:174
+#: ckanext/dataset_comments/templates/package/resource_read.html:166
+#: ckanext/dataset_comments/templates/package/resource_read.html:205
+#: ckanext/dataset_comments/templates/package/resource_read.html:271
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:151
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:190
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:256
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:169
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:211
 msgid "hide"
 msgstr "skryť"
 
-#: ckanext/dataset_comments/templates/package/resource_read.html:126
-#: ckanext/dataset_comments/templates/package/resource_read.html:169
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:120
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:163
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:134
-msgid "report"
-msgstr "nahlásiť"
+#: ckanext/dataset_comments/templates/package/resource_read.html:168
+#: ckanext/dataset_comments/templates/package/resource_read.html:211
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:153
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:196
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:171
+msgid "report inappropriate content"
+msgstr "nahlásiť nevhodný komentár"
 
-#: ckanext/dataset_comments/templates/package/resource_read.html:129
-#: ckanext/dataset_comments/templates/package/resource_read.html:137
-#: ckanext/dataset_comments/templates/package/resource_read.html:175
-#: ckanext/dataset_comments/templates/package/resource_read.html:183
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:123
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:131
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:169
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:177
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:139
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:147
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:183
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:191
+#: ckanext/dataset_comments/templates/package/resource_read.html:171
+#: ckanext/dataset_comments/templates/package/resource_read.html:179
+#: ckanext/dataset_comments/templates/package/resource_read.html:217
+#: ckanext/dataset_comments/templates/package/resource_read.html:225
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:156
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:164
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:202
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:210
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:176
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:184
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:220
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:228
 msgid "Like this"
 msgstr "Páči sa mi to"
 
-#: ckanext/dataset_comments/templates/package/resource_read.html:137
-#: ckanext/dataset_comments/templates/package/resource_read.html:183
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:131
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:177
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:147
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:191
+#: ckanext/dataset_comments/templates/package/resource_read.html:179
+#: ckanext/dataset_comments/templates/package/resource_read.html:225
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:164
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:210
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:184
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:228
 msgid "Dislike this"
 msgstr "Nepáči sa mi to"
 
-#: ckanext/dataset_comments/templates/package/resource_read.html:197
-#: ckanext/dataset_comments/templates/package/resource_read.html:212
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:191
-#: ckanext/dataset_comments/templates/package/snippets/comments.html:206
-#: ckanext/dataset_comments/templates/related/snippets/comments2.html:222
+#: ckanext/dataset_comments/templates/package/resource_read.html:239
+#: ckanext/dataset_comments/templates/package/resource_read.html:254
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:224
+#: ckanext/dataset_comments/templates/package/snippets/comments.html:239
+#: ckanext/dataset_comments/templates/related/snippets/comments2.html:259
 msgid "Reply"
 msgstr "Odpovedať"
 
@@ -401,7 +540,11 @@ msgid ""
 "for\n"
 "        things that could be done with them.\n"
 "      "
-msgstr "toto sú aplikácie zostavené datasetmi ako aj nápadmi"
+msgstr ""
+"\n"
+"       Toto sú aplikácie zostavené datasetmi ako aj nápadmipre\n"
+"       ich iné využitie.\n"
+"      "
 
 #: ckanext/dataset_comments/templates/related/dashboard.html:408
 msgid "Only show featured items"
@@ -414,4 +557,7 @@ msgstr "Zobraziť iba súkromné záznamy"
 #: ckanext/dataset_comments/templates/related/dashboard.html:426
 msgid "Cancel"
 msgstr "Zrušiť"
+
+#~ msgid "report"
+#~ msgstr "nahlásiť"
 
