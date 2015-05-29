@@ -135,9 +135,9 @@ def mod_comments(context, data_dict):
     info = comments_db.DatasetComments.get(**data_dict)
     
     if info[0].pub == 'private':
-    	info[0].pub = 'public'
+        info[0].pub = 'public'
     else:
-    	info[0].pub = 'private'
+        info[0].pub = 'private'
 
     info[0].save()
     session = context['session']
@@ -200,7 +200,7 @@ class CommentsController(base.BaseController):
             self._setup_template_variables(context, data_dict)
             return base.render("admin/pages.html") 
         else:
-            base.abort(401, _('Not authorized to report, please login first'))
+            base.abort(401, _('Not authorized to view this page.'))
         pass
     def ReportComment(self):
         context = {'model': model, 'session': model.Session,
@@ -278,8 +278,8 @@ class CommentsController(base.BaseController):
 
         try:
             logic.check_access('commets_admin', context)
-        except logic.NotAuthorized:
-            base.abort(401, _('Not authorized to see this page'))
+        except toolkit.NotAuthorized, e:
+            toolkit.abort(401, e.extra_msg)
 
         all_comments = AdminCommentList()
         
@@ -391,9 +391,9 @@ class CommentsController(base.BaseController):
             parent = None   
 
         data_dict = {'id': id, 'user_id':c.userobj.id, 
-        			'date': date, 'pub': 'public', 
-        			'dataset_id': dataset_id,
-        			'comment_text': text, 'parent': parent}
+                    'date': date, 'pub': 'public', 
+                    'dataset_id': dataset_id,
+                    'comment_text': text, 'parent': parent}
         logging.warning(c.post_data)
 
         if len(text) < 5:
@@ -465,7 +465,7 @@ class CommentsController(base.BaseController):
         return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
 
     def DeleteComment(self):
-    	context = {'model': model, 'session': model.Session,
+        context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
         data_dict = {'id': base.request.params.get('id', '')}
@@ -645,7 +645,7 @@ def Editor():
     try:
         logic.check_access('app_editall', context)
         return True
-    except logic.NotAuthorized:
+    except toolkit.NotAuthorized, e:
         return False
 
 def AdminCommentList():
