@@ -41,24 +41,28 @@
 
 {%endif%}
 
+<style>
 
+</style>
       <ul class="dataset-list unstyled">
       {%for comment in c.comments %}
-      <li class="dataset-item">
+      <li class="dataset-item" style="padding-bottom: 3px; margin-bottom: 3px;">
       	<div class="dataset-content">
-      		<h3 class="dataset-heading">{{h.username(comment.user_id)}}</h3>
-      		<h4> {{comment.date}}, {{_(comment.pub)}}, 
+      		<h3 class="dataset-heading" style="padding: 2px; margin: 2px;">{{h.username(comment.user_id)}}</h3>
+      		<h4 style="padding: 0px; margin: 0px;"> {{comment.date}}, {{_(comment.pub)}}, 
       			
       			{% if h.is_app(comment.dataset_id) %}
-      				<a href="/apps/detail?id={{comment.dataset_id}}"> URL </a>
-      			{%elif comment.dataset_id != 'import' %}
-      				<a href="/dataset/{{comment.dataset_id}}"> URL </a>
+      				<a href="/apps/detail?id={{comment.dataset_id}}"> {{h.app_n(comment.dataset_id)}} </a>
+      			{%elif  h.is_dataset(comment.dataset_id) and comment.dataset_id != 'import' %}
+      				<a href="/dataset/{{comment.dataset_id}}"> {{h.dataset_n(comment.dataset_id) }}</a>
+            {%else%}
+              <a href="/dataset/{{h.resource_url_helper(comment.dataset_id)}}/resource/{{comment.dataset_id}}"> {{h.resource_n(comment.dataset_id) }}</a>
       			{%endif%}
       			
 
       		</h4>
           
-      		<p>
+      		<p style="padding: 0px; margin: 0px;">
             {% for i in comment.comment_text.split('<br />')%}
             {{i}}<br />
             {%endfor%}
