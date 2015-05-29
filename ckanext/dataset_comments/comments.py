@@ -186,14 +186,18 @@ class CommentsController(base.BaseController):
         c.is_myself = user_dict['name'] == c.user
         c.about_formatted = h.render_markdown(user_dict['about'])
 
+
     def AdminPage(self):
         context = {'model': model, 'session': model.Session,
                    'user': c.user or c.author, 'auth_user_obj': c.userobj,
                    'for_view': True}
-        data_dict = {"id":c.userobj.id}
-
-        self._setup_template_variables(context, data_dict)
+        if(c.userobj != None):
+            data_dict = {"id":c.userobj.id}
+        else:
+            data_dict = {"id":None}
+        
         if admin_or_moderator():
+            self._setup_template_variables(context, data_dict)
             return base.render("admin/pages.html") 
         else:
             base.abort(401, _('Not authorized to report, please login first'))
