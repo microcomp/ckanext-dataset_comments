@@ -44,6 +44,54 @@ def IsApp(id):
         return True
     return False
 
+def resource_url_helper(id):
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    resource = model.Session.query(model.Resource).filter(model.Resource.id==id).first()
+    resource_group_id = resource.resource_group_id
+    r2 = model.Session.query(model.ResourceGroup).filter(model.ResourceGroup.id == resource_group_id).first()
+    return r2.package_id
+
+def resource_name(id):
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    resource = model.Session.query(model.Resource).filter(model.Resource.id==id).first()
+
+
+    return resource.name
+
+
+
+def AppName(id):
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    related = model.Session.query(model.Related) \
+                .filter(model.Related.id == id).first()
+    return related.title
+
+def DatasetName(id):
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    data_dict = {'related_id': id}
+    related = model.Session.query(model.Package) \
+                .filter(model.Package.id == id).first()
+    return related.title
+
+def IsDataset(id):
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+    data_dict = {'related_id': id}
+    related = model.Session.query(model.Package) \
+                .filter(model.Package.id == id).first()
+    if related != None:
+        return True
+    return False
+
 def create_dataset_comments_table(context):
     if comments_db.dataset_comments_table is None:
         comments_db.init_db(context['model'])
@@ -695,9 +743,3 @@ def md5_create(input):
     result.update(input)
 
     return result.hexdigest()
-
-
-
-
-
-
