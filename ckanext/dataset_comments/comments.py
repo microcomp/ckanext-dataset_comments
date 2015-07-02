@@ -178,11 +178,13 @@ class CommentsController(base.BaseController):
     def _setup_template_variables(self, context, data_dict):
         try:
             user_dict = logic.get_action('user_show')(context, data_dict)
+            followers = logic.get_action('user_follower_count')(context, data_dict)
         except logic.NotFound:
             abort(404, _('User not found'))
         except logic.NotAuthorized:
             abort(401, _('Not authorized to see this page'))
         c.user_dict = user_dict
+        c.user_dict['num_followers'] = followers
         c.is_myself = user_dict['name'] == c.user
         c.about_formatted = h.render_markdown(user_dict['about'])
 
@@ -617,7 +619,7 @@ def GetUsername(user_id):
                 .filter(model.User.id == user_id).first()
     if username == None:
         return user_id
-    return username.name
+    return username.fullname
 def ListChildren(id, comment_id):
     context = {'model': model, 'session': model.Session,
                'user': c.user or c.author, 'auth_user_obj': c.userobj,
