@@ -510,11 +510,11 @@ class CommentsController(base.BaseController):
         # ID, sum, IP, apikey, blocking_date, until
         # unblock by admin ... 
         #/custom_api/comment/new?api_key=<API_KEY>&comment_text=<TEXT>&date=<DATUM>&comment_id=<id komentaru>&author=<login>
-
         
         API_KEY = base.request.params.get('api_key', '')
         user_id = ""
         user_id = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
+        response.headers['Content-Type'] = 'json'
         if user_id:
             user_id = user_id.id
         else:
@@ -567,7 +567,7 @@ class CommentsController(base.BaseController):
 
         API_KEY = base.request.params.get('api_key', '')
         comment_id = base.request.params.get('comment_id', '')
-
+        response.headers['Content-Type'] = 'json'
         user_id = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
         if user_id:
             user_id = user_id.id
