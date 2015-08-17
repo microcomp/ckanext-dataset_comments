@@ -18,6 +18,7 @@ class DatasetCommentsPlugin(plugins.SingletonPlugin):
     controller = 'ckanext.dataset_comments.comments:CommentsController'
     
     plugins.implements(plugins.IConfigurer)
+    plugins.implements(plugins.interfaces.IActions)
     plugins.implements(plugins.IRoutes, inherit=True)
     plugins.implements(plugins.ITemplateHelpers, inherit=False)
     def before_map(self, map):
@@ -34,13 +35,17 @@ class DatasetCommentsPlugin(plugins.SingletonPlugin):
         map.connect('moderator_v', '/admin/comments', action='AdminList', controller='ckanext.dataset_comments.comments:CommentsController')
         map.connect('moderator_page', '/admin', action='AdminPage', controller='ckanext.dataset_comments.comments:CommentsController')
 
-        map.connect('comment_new_api', '/custom_api/comment/new', action='NewCommentApi', controller='ckanext.dataset_comments.comments:CommentsController')
-        map.connect('comment_del_api', '/custom_api/comment/del', action='DelCommentApi', controller='ckanext.dataset_comments.comments:CommentsController')
+        #map.connect('comment_new_api', '/custom_api/comment/new', action='NewCommentApi', controller='ckanext.dataset_comments.comments:CommentsController')
+        #map.connect('comment_del_api', '/custom_api/comment/del', action='DelCommentApi', controller='ckanext.dataset_comments.comments:CommentsController')
         
         return map
     def update_config(self, config):
         toolkit.add_template_directory(config, 'templates')
         toolkit.add_public_directory(config, 'public')
+    def get_actions(self):
+    # Registers the custom API method defined above
+        return {'new_comment':comments.NewCommentApi,
+                'delete_comment': comments.DelCommentApi}#
     def get_helpers(self):
         return {'list': comments.ListComments,
                 'username': comments.GetUsername,

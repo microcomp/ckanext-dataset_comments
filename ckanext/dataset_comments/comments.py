@@ -24,6 +24,71 @@ import __builtin__
 import datetime
 
 _check_access = logic.check_access
+@toolkit.side_effect_free
+def NewCommentApi(context, data_dict=None):
+    ''' API function for new comments'''
+
+    _check_access('app_create', context, data_dict)
+    id = unicode(uuid.uuid4()) 
+    
+    import time
+    date = int(time.time())    
+    date = datetime.datetime.fromtimestamp(int(date)).strftime('%Y/%m/%d %H:%M:%S')
+    try:
+        text = data_dict['comment_text']
+    except KeyError:
+        ed = {'message': 'Comment too short'}
+        raise logic.ValidationError(ed)
+    try:
+        dataset_id = data_dict["dataset_id"]
+    except KeyError:
+        ed = {'message': 'Invalid dataset/application/resource id'}
+        raise logic.ValidationError(ed)
+    pub = "private"
+    user_id = context['auth_user_obj'].id
+    text = " ".join(text.split(" "))
+    text = text.replace('\r\n', '<br />')
+    text = text.split('<br />')
+    text2 = []
+    for i in range(len(text)):
+        if text[i] != '' and text[i] != ' ':
+            text2.append(text[i])
+    text = "<br />".join(text2)
+    if len(text) < 5:
+        ed = {'message': 'Comment too short'}
+        raise logic.ValidationError(ed)
+    try:
+        parent = data_dict['parent_id']
+    except KeyError:
+        parent = ""
+
+    data_dict2 = {'id': id, 'user_id':user_id, 
+                'date': date, 'pub': pub, 
+                'dataset_id': dataset_id,
+                'comment_text': text, 'parent': parent}
+
+    new_comment(context, data_dict2)
+    model.Session.commit()
+    
+    return { "text":  text, "result": "new comment added"}
+
+@toolkit.side_effect_free
+def DelCommentApi(context, data_dict=None):
+    '''delete/restore comment'''
+    try:
+        comment_id = data_dict['comment_id']
+    except KeyError:
+        ed = {'message': 'Comment not found'}
+        raise logic.ValidationError(ed)
+
+    _check_access('commets_admin', context, data_dict)
+    data_dict2 = {'id':comment_id}
+    mod_comments(context, data_dict2)
+    return   _("comment deleted")
+
+
+
+
 def IsRes(id):
     context = {'model': model, 'session': model.Session,
                'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -501,91 +566,7 @@ class CommentsController(base.BaseController):
         dataset_id = get_comments(context, data_dict)[0].dataset_id
         return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
 
-    def NewCommentApi(self):
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-        #logging.warning(context['user'])
-        # new table 
-        # ID, sum, IP, apikey, blocking_date, until
-        # unblock by admin ... 
-        #/custom_api/comment/new?api_key=<API_KEY>&comment_text=<TEXT>&date=<DATUM>&comment_id=<id komentaru>&author=<login>
-        
-        API_KEY = base.request.params.get('api_key', '')
-        user_id = ""
-        user_id = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
-        response.headers['Content-Type'] = 'json'
-        if user_id:
-            user_id = user_id.id
-        else:
-            return json.dumps({"help": "new comment","sucess": False, "result":  _("invalid API key")}, encoding='utf8')
-        if len(user_id) < 1:
-            return json.dumps({"help": "new comment","sucess": False, "result":  _("invalid API key")}, encoding='utf8')
-
-        
-        id = base.request.params.get('comment_id','')
-        date = base.request.params.get('date','')
-        date = datetime.datetime.fromtimestamp(int(date)).strftime('%Y/%m/%d %H:%M:%S')
-
-        text = base.request.params.get('comment_text','')
-        dataset_id = "import"
-        pub = "private"
-        user_id = base.request.params.get('author','')
-
-
-        #author=<login>
-
-        text = " ".join(text.split(" "))
-        text = text.replace('\r\n', '<br />')
-        text = text.split('<br />')
-        text2 = []
-        for i in range(len(text)):
-            if text[i] != '' and text[i] != ' ':
-                text2.append(text[i])
-
-        text = "<br />".join(text2)
-
-        if len(text) < 5:
-            return json.dumps({"help": "new comment","sucess": False, "result":  _("comment too short")}, encoding='utf8')
-        
-        parent = base.request.params.get('parent_id','') 
-
-        data_dict = {'id': id, 'user_id':user_id, 
-                    'date': date, 'pub': pub, 
-                    'dataset_id': dataset_id,
-                    'comment_text': text, 'parent': parent}
-
-        new_comment(context, data_dict)
-        model.Session.commit()
-        url = "dataset/"+dataset_id
-        return json.dumps({"help": "new comment","sucess": True, "result":  text}, encoding='utf8')
-
-    def DelCommentApi(self):
-        context = {'model': model, 'session': model.Session,
-                   'user': c.user or c.author, 'auth_user_obj': c.userobj,
-                   'for_view': True}
-
-        API_KEY = base.request.params.get('api_key', '')
-        comment_id = base.request.params.get('comment_id', '')
-        response.headers['Content-Type'] = 'json'
-        user_id = model.Session.query(model.User).filter(model.User.apikey == API_KEY).first()
-        if user_id:
-            user_id = user_id.id
-        else:
-            return json.dumps({"help": "del comment","sucess": False, "result":  _("invalid API key")}, encoding='utf8')
-
-
-
-        data_dict = {'id': comment_id}
-
-        try:
-            logic.check_access('app_editall', context)
-            mod_comments(context, data_dict)
-            return json.dumps({"help": "del comment","sucess": True, "result":  _("comment deleted")}, encoding='utf8')
-        except logic.NotAuthorized:
-            return json.dumps({"help": "del comment","sucess": False, "result":  _("not authorized")}, encoding='utf8')
-
-        return
+   
 
 def ListComments(id):
     context = {'model': model, 'session': model.Session,
@@ -742,7 +723,10 @@ def auth_sla_management():
 
 import hashlib
 def md5_create(input):
-    input = input.encode('utf-8')
+    if input != None:
+        input = input.encode('utf-8')
+    else:
+        input ="none"
     result = hashlib.md5()
     result.update(input)
 
