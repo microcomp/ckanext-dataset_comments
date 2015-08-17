@@ -74,6 +74,7 @@ def NewCommentApi(context, data_dict=None):
 
 @toolkit.side_effect_free
 def DelCommentApi(context, data_dict=None):
+    '''delete/restore comment'''
     try:
         comment_id = data_dict['comment_id']
     except KeyError:
@@ -81,7 +82,8 @@ def DelCommentApi(context, data_dict=None):
         raise logic.ValidationError(ed)
 
     _check_access('commets_admin', context, data_dict)
-
+    data_dict2 = {'id':comment_id}
+    mod_comments(context, data_dict2)
     return   _("comment deleted")
 
 
