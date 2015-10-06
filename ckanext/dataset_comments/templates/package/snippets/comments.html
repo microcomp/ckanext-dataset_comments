@@ -4,7 +4,7 @@
 {%set uid = data[3] %}
 
 {% if user != '' %}
-<h3 style="text-align: center;"> <button id="new_comment_button" class="mybutton" onclick="$('#new_comment_button').hide();$('#new_comment_form').show();">{{_('New comment')}} </button></h3>
+<h3 style="text-align: right;font-size: 1.1em"> <button id="new_comment_button" class="mybutton" onclick="$('#new_comment_button').hide();$('#new_comment_form').show();">{{_('New comment')}} </button></h3>
 
 <form class="form-horizontal" method="post" action="/dataset/{{current_package_id}}/comments/new" style="display:none" id="new_comment_form">
 <legend>{{ _('New comment') }}</legend>
