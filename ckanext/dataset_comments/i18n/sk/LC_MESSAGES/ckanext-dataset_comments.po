@@ -329,7 +329,7 @@ msgstr "ukázať"
 #: ckanext/dataset_comments/templates/related/snippets/comments2.html:156
 #: ckanext/dataset_comments/templates/related/snippets/comments2.html:200
 msgid "User(s) liked this."
-msgstr "použivateľom sa to páči."
+msgstr "používateľom sa to páči."
 
 #: ckanext/dataset_comments/templates/package/resource_read.html:163
 #: ckanext/dataset_comments/templates/package/snippets/comments.html:148
