@@ -44,8 +44,8 @@ class DatasetCommentsPlugin(plugins.SingletonPlugin):
         toolkit.add_public_directory(config, 'public')
     def get_actions(self):
     # Registers the custom API method defined above
-        return {'new_comment':comments.NewCommentApi,
-                'delete_comment': comments.DelCommentApi}#
+        return {'new_comment':comments.newCommentApi,
+                'delete_comment': comments.delCommentApi}#
     def get_helpers(self):
         return {'list': comments.ListComments,
                 'username': comments.GetUsername,
