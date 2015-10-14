@@ -22,10 +22,11 @@ import logging
 import ckan.logic
 import __builtin__
 import datetime
+_get_or_bust = logic.get_or_bust
 
 _check_access = logic.check_access
 @toolkit.side_effect_free
-def NewCommentApi(context, data_dict=None):
+def newCommentApi(context, data_dict=None):
     ''' API function for new comments'''
 
     _check_access('app_create', context, data_dict)
@@ -34,16 +35,10 @@ def NewCommentApi(context, data_dict=None):
     import time
     date = int(time.time())    
     date = datetime.datetime.fromtimestamp(int(date)).strftime('%Y/%m/%d %H:%M:%S')
-    try:
-        text = data_dict['comment_text']
-    except KeyError:
-        ed = {'message': 'Comment too short'}
-        raise logic.ValidationError(ed)
-    try:
-        dataset_id = data_dict["dataset_id"]
-    except KeyError:
-        ed = {'message': 'Invalid dataset/application/resource id'}
-        raise logic.ValidationError(ed)
+
+    text = _get_or_bust(data_dict,"comment_text")
+    dataset_id =  _get_or_bust(data_dict,"dataset_id")
+
     pub = "private"
     user_id = context['auth_user_obj'].id
     text = " ".join(text.split(" "))
@@ -70,16 +65,12 @@ def NewCommentApi(context, data_dict=None):
     new_comment(context, data_dict2)
     model.Session.commit()
     
-    return { "text":  text, "result": "new comment added"}
+    return { "new comment added"}
 
 @toolkit.side_effect_free
-def DelCommentApi(context, data_dict=None):
+def delCommentApi(context, data_dict=None):
     '''delete/restore comment'''
-    try:
-        comment_id = data_dict['comment_id']
-    except KeyError:
-        ed = {'message': 'Comment not found'}
-        raise logic.ValidationError(ed)
+    comment_id = _get_or_bust(data_dict, 'comment_id')
 
     _check_access('commets_admin', context, data_dict)
     data_dict2 = {'id':comment_id}
