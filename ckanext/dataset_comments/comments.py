@@ -65,7 +65,7 @@ def newCommentApi(context, data_dict=None):
     new_comment(context, data_dict2)
     model.Session.commit()
     
-    return { "new comment added"}
+    return  _("new comment added")
 
 @toolkit.side_effect_free
 def delCommentApi(context, data_dict=None):
