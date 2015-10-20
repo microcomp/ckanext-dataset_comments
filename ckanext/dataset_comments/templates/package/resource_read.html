@@ -73,7 +73,7 @@
 
 <div class="comments_1st" style="background-color:#D1D1D1;">
     <div class="comment" id="comment_id"  >
-        <h3 style="color:#858585;">{{h.username(i.user_id)}}
+        <h3 style="color:#858585;"><a href='/user/{{i.user_id}}' target="_blank" title="profil: {{h.username(i.user_id)}}">{{h.username(i.user_id)}}</a>
 
 
         
@@ -97,7 +97,7 @@
         {#% for j in h.list_children(c.resource_id, i.id) %}
                 <div {% if j.pub != 'private' %}class="comments_2nd" {%else%}class="comments_2nd_priv" {%endif%}>
                 <div class="comment" id="comment_id">
-                    <h3 {% if j.pub == 'private' %}style="color:#858585;" {%endif%}>{{h.username(j.user_id)}}</h3><p class="date" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}> {{j.date}}</p>
+                    <h3 {% if j.pub == 'private' %}style="color:#858585;" {%endif%}><a href='/user/{{j.user_id}}' target="_blank" title="profil: {{h.username(j.user_id)}}">{{h.username(j.user_id)}}</a></h3><p class="date" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}> {{j.date}}</p>
                      
                     <p class="comment_text" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}>
                         
@@ -141,7 +141,7 @@ function show_form(id){
 </script>
 <div class="comments_1st">
     <div class="comment" id="comment_id"  >
-        <h3>{{h.username(i.user_id)}} 
+        <h3><a href='/user/{{i.user_id}}' target="_blank" title="profil: {{h.username(i.user_id)}}">{{h.username(i.user_id)}}</a> 
 {% set val = h.sum(i.id) %}
 
 
@@ -184,7 +184,7 @@ function show_form(id){
             {% for j in h.list_children(c.resource_id, i.id) %}
                 <div {% if j.pub != 'private' %}class="comments_2nd" {%else%}class="comments_2nd_priv" {%endif%}>
                 <div class="comment" id="comment_id">
-                    <h3 {% if j.pub == 'private' %}style="color:#858585;" {%endif%}>{{h.username(j.user_id)}}
+                    <h3 {% if j.pub == 'private' %}style="color:#858585;" {%endif%}><a href='/user/{{j.user_id}}' target="_blank" title="profil: {{h.username(j.user_id)}}">{{h.username(j.user_id)}}</a>
 
                     {% set val = h.sum(j.id) %}
        
