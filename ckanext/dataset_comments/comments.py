@@ -596,7 +596,7 @@ def GetUsername(user_id):
                 .filter(model.User.id == user_id).first()
     if username == None:
         return user_id
-    return username.name
+    return username.fullname
 def ListChildren(id, comment_id):
     context = {'model': model, 'session': model.Session,
                'user': c.user or c.author, 'auth_user_obj': c.userobj,
