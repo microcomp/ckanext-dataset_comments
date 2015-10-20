@@ -25,6 +25,14 @@ import datetime
 _get_or_bust = logic.get_or_bust
 
 _check_access = logic.check_access
+
+def _get_or_empty(dict, key):
+    result = ""
+    try:
+        result = data_dict[key]
+    except KeyError:
+        result = ""
+    return result
 @toolkit.side_effect_free
 def newCommentApi(context, data_dict=None):
     ''' API function for new comments'''
@@ -273,7 +281,7 @@ class CommentsController(base.BaseController):
         dataset_id = get_comments(context, data_dict)[0].dataset_id
 
         if IsApp(dataset_id):
-            return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
+            return h.redirect_to(controller='ckanext.applications.detail:DetailController', action='detail', id=dataset_id)
         else:
             if IsRes(dataset_id):
 
@@ -503,7 +511,7 @@ class CommentsController(base.BaseController):
         text = "<br />".join(text2)
 
         if len(text) < 5:
-            base.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id, error='too_short')
+            base.redirect_to(controller='ckanext.applications.detail:DetailController', action='detail', id=dataset_id, error='too_short')
         parent = base.request.params.get('parent_id','') 
 
         if parent == "":
@@ -517,8 +525,7 @@ class CommentsController(base.BaseController):
         logging.warning(c.post_data)
         new_comment(context, data_dict)
         model.Session.commit()
-
-        return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
+        return h.redirect_to(controller='ckanext.applications.detail:DetailController', action='detail', id=dataset_id)
 
     def DeleteComment(self):
         context = {'model': model, 'session': model.Session,
@@ -555,7 +562,7 @@ class CommentsController(base.BaseController):
             logging.warning('NotAuthorized')
         
         dataset_id = get_comments(context, data_dict)[0].dataset_id
-        return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
+        return h.redirect_to(controller='ckanext.applications.detail:DetailController', action='detail', id=dataset_id)
 
    
 

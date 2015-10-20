@@ -7,7 +7,9 @@
      <ul class="nav nav-tabs">
          <li ><a href="/user/{{c.userobj.name}}"><i class="icon-sitemap"></i> Datasety</a></li>
   		 <li><a href="/user/activity/{{c.userobj.name}}"><i class="icon-time"></i> Prehľad aktivít</a></li>
+       {%if h.management_installed() %}
 
+    {%endif%}
 		<li class="active">
 			<a href="/admin"> Administration</a>
 		</li>

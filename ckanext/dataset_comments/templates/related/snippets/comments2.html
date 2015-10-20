@@ -3,38 +3,34 @@
 {%set id = data[2] %}
 {%set uid = data[3] %}
 
- <link href='/comments.css' type="text/css" rel='stylesheet'>
-<style>
-
-
-</style>
+ <link href='/comments.css' type="text/css" rel='stylesheet' property='stylesheet'>
 {% if user != '' %}
 <h3 style="text-align: center;"> <button id="new_fomment_button" class="mybutton" onclick="$('#new_fomment_button').hide();$('#new_fomment_form').show();">{{_('New comment')}} </button></h3>
 <form class="form-horizontal" method="post" action="/apps/{{app_id}}/comments/new" style="display:none" id="new_fomment_form">
-<legend>{{ _('New comment') }}</legend>
+<h2>{{ _('New comment') }}</h2>
 
   <div class="controls" style="margin-left:0px;">                     
-    <textarea id="textarea" name="comment_text" style="resize: vertical;width: 98%;" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"> {{ _('New comment') }}...</textarea>
+    <textarea  name="comment_text" style="resize: vertical;width: 98%;" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"> {{ _('New comment') }}...</textarea>
   </div>
 
   <div class="controls" style="margin-left:0px;">
-    <button id="submit" name="submit" class="btn btn-default">{{_('Post comment')}}</button>
-    <textarea id="textarea" name="app_id" style="display:none;">{{app_id}}</textarea>
+    <button  name="submit" class="btn btn-default">{{_('Post comment')}}</button>
+    <textarea  name="app_id" style="display:none;">{{app_id}}</textarea>
   </div>
 </form>
 
 
 <noscript>
 <form class="form-horizontal" method="post" action="/apps/{{app_id}}/comments/new">
-<legend>{{ _('New comment') }}</legend>
+<h2>{{ _('New comment') }}</h2>
 
   <div class="controls" style="margin-left:0px;">                     
-    <textarea id="textarea" name="comment_text" style="resize: vertical;width: 98%;" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"> {{ _('New comment') }}...</textarea>
+    <textarea  name="comment_text" style="resize: vertical;width: 98%;" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"> {{ _('New comment') }}...</textarea>
   </div>
 
   <div class="controls" style="margin-left:0px;">
-    <button id="submit" name="submit" class="btn btn-default">{{_('Post comment')}}</button>
-    <textarea id="textarea" name="app_id" style="display:none;">{{app_id}}</textarea>
+    <button  name="submit" class="btn btn-default">{{_('Post comment')}}</button>
+    <textarea  name="app_id" style="display:none;">{{app_id}}</textarea>
   </div>
 </form>
 </noscript>
@@ -82,53 +78,7 @@
                 <li style="color:#858585;"><a href="/apps/comments/delete?id={{i.id}}" class="delete" style="color:#858585;"><i class='fa fa-remove'></i> {{_('show')}}</a></li>
                 
                 {%endif%}
-            <ul>
-                <!-- remove this -->
-        {#% for j in h.list_children(app_id, i.id) %}
-                <div {% if j.pub != 'private' %}class="comments_2nd" {%else%}class="comments_2nd_priv" {%endif%}>
-                <div class="comment" id="comment_id">
-                    <h3 {% if j.pub == 'private' %}style="color:#858585;" {%endif%}>{{h.username(j.user_id)}}
-
-                {%if user %}
-                          {%set res = h.liked(uid, j.id) %}
-                          {% if res['is'] == False %}
-                            <a href='/dataset/like?dataset_id={{id}}&comment_id={{j.id}}'><i class="fa fa-thumbs-o-up"></i> {{_('Like this')}}</a>
-                           {%else%}
-                            {% if res['type'] == 'like' %}
-                                {% set type = 'dislike' %}
-                            {%else%}
-                                {% set type = 'like' %}     
-                            {%endif%}
-                            <a href='/dataset/{{type}}?dataset_id={{id}}&comment_id={{j.id}}'>
-                                <i class="fa fa-thumbs-o-{% if type == 'like'%}up"></i> {{_('Like this')}}{%else%}down"></i> {{_('Dislike this')}}{%endif%}</a>
-                            {%endif%}
-                        {%endif%}
-
-
-                    </h3><p class="date" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}> {{j.date}}</p>
-                    <p class="comment_text" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}>
-                        {%for text in j.comment_text.split('<br />') %}
-                            {{ text }}<br />
-                        {%endfor%} 
-                        
-                    <ul>
-                    {% if h.editor() %}
-                        {% if j.pub != 'private' %}
-                        <li><a href="/apps/comments/delete?id={{j.id}}" class="delete" ><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
-                        {%else%}
-                        <li><a href="/apps/comments/delete?id={{j.id}}" class="delete" style="color:#858585;"><i class='fa fa-remove'></i> {{_('show')}}</a></li>
-                        {%endif%}
-                    {%else%}
-                            <li><a href="/comments/report?id={{i.id}}" class="report"><i class='fa fa-exclamation'></i> {{_('show')}}</a></li>
-                    {%endif%}
-                    <ul>
-
-                    </p>
-                </div>
-            </div>
-            {%endfor%#}
-
-            
+            </ul>
         </p>
     </div>
 </div>
@@ -184,7 +134,7 @@ function show_form(id){
                 <i class="fa fa-thumbs-o-{% if type == 'like'%}up"></i> {{_('Like this')}}{%else%}down"></i> {{_('Dislike this')}}{%endif%}</a>
             {%endif%}
         {%endif%}</li>
-            <ul>
+            </ul>
 
             {% for j in h.list_children(app_id, i.id) %}
                 <div {% if j.pub != 'private' %}class="comments_2nd" {%else%}class="comments_2nd_priv" {%endif%}>
@@ -229,7 +179,7 @@ function show_form(id){
                             {%endif%}
                         {%endif%}
                     </li>
-                    <ul>
+                    </ul>
 
                     </p>
                 </div>
@@ -240,14 +190,14 @@ function show_form(id){
                     {% if user != ''%}
                         <form class="form-horizontal" method="post" action="/apps/{{app_id}}/comments/new?parent_id={{i.id}}">
                           <div class="controls" style="margin-left:0px;">                     
-                            <textarea id="textarea" name="comment_text" style="resize: vertical;width: 100%;" 
-                            onfocus="if(this.value==this.defaultValue)this.value='';"</textarea>
+                            <textarea  name="comment_text" style="resize: vertical;width: 100%;" 
+                            onfocus="if(this.value==this.defaultValue)this.value='';"></textarea>
                           </div>
 
                           <div class="controls" style="margin-left:0px;">
-                            <button id="submit" name="submit" class="btn btn-default">{{_('Post comment')}}</button>
-                            <textarea id="textarea" name="app_id" style="display:none;">{{app_id}}</textarea>
-                            <textarea id="textarea" name="comment_id" style="display:none;">{{id}}</textarea>
+                            <button  name="submit" class="btn btn-default">{{_('Post comment')}}</button>
+                            <textarea  name="app_id" style="display:none;">{{app_id}}</textarea>
+                            <textarea  name="comment_id" style="display:none;">{{id}}</textarea>
                           </div>
                         </form>
                     {%endif%}
@@ -256,19 +206,19 @@ function show_form(id){
                     {% if user != ''%}
                         <form class="form-horizontal" method="post" action="/apps/{{app_id}}/comments/new?parent_id={{i.id}}" hidden id="{{i.id}}">
                           <div class="controls" style="margin-left:0px;">                     
-                            <textarea id="textarea" name="comment_text" style="resize: vertical;width: 98%;" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"> {{ _('Reply') }}...</textarea>
+                            <textarea  name="comment_text" style="resize: vertical;width: 98%;" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"> {{ _('Reply') }}...</textarea>
                           </div>
 
                           <div class="controls" style="margin-left:0px;">
-                            <button id="submit" name="submit" class="btn btn-default">{{_('Post comment')}}</button>
-                            <textarea id="textarea" name="app_id" style="display:none;">{{app_id}}</textarea>
-                            <textarea id="textarea" name="comment_id" style="display:none;">{{id}}</textarea>
+                            <button  name="submit" class="btn btn-default">{{_('Post comment')}}</button>
+                            <textarea  name="app_id" style="display:none;">{{app_id}}</textarea>
+                            <textarea  name="comment_id" style="display:none;">{{id}}</textarea>
                           </div>
                         </form>
                     {%endif%}
             
            
-        </p>
+
     </div>
 </div>
 {%endif%}
