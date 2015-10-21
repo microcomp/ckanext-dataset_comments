@@ -22,7 +22,7 @@
 
 
 <noscript>
-<form class="form-horizontal" method="post" action="/dataset/{{current_package_id}}/comments/new">
+<form class="form-horizontal" method="post" action="/dataset/{{current_package_id}}/comments/new" >
 <legend>{{ _('New comment') }}</legend>
 
   <div class="controls" style="margin-left:0px;">                     
@@ -119,7 +119,7 @@
 {% elif i.pub == 'public' or i.pub == 'reported'%}
 <script type="text/javascript">
 function show_form(id){
-    var form = document.getElementById(id)
+    var form = document.getElementById(id+"_reply")
     form.hidden = false;
 }
 
@@ -127,14 +127,22 @@ function show_form(id){
 <div class="comments_1st">
     <div class="comment" id="comment_id"  >
         <h3><a href='/user/{{i.user_id}}' target="_blank" title="profil: {{h.username(i.user_id)}}">{{h.username(i.user_id)}}</a> 
-{% set val = h.sum(i.id) %}
+{#% set val = h.sum(i.id) %#}
 
 
 
-          
+          {% set val =  h.fromUsers(i.id) %}
+
+          {% snippet "snippets/modal_snippet.html", usernames=val['uIDs'], modal_id=i.id %}    
+        </h3><p class="date"> {{i.date}}<br />
+         {% if val['val'] > 0 %}
+        <a style="color:#bd0a26; text-decor:none; cursor: pointer;" data-toggle="modal" data-target="#{{i.id}}"><b style="color:#bd0a26; font-size:1.4em;">{{val['val']}}</b></a>
+        {%else%}
+        <b style="color:#bd0a26; font-size:1.4em;">{{val['val']}}</b>
+        {%endif%}
 
 
-        </h3><p class="date"> {{i.date}}<br /> <b style="color:#bd0a26; font-size:1.4em;">{{val['val']}}</b><b> {{_('User(s) liked this.')}}</b></p>
+        <b> {{_('User(s) liked this.')}}</b></p>
 
         <p class="comment_text">
             {#{i.comment_text.replace('\\next', '<br />')}#}
@@ -167,17 +175,26 @@ function show_form(id){
             <ul>
 
             {% for j in h.list_children(current_package_id, i.id) %}
+
                 <div {% if j.pub != 'private' %}class="comments_2nd" {%else%}class="comments_2nd_priv" {%endif%}>
                 <div class="comment" id="comment_id">
                     <h3 {% if j.pub == 'private' %}style="color:#858585;" {%endif%}><a href='/user/{{j.user_id}}' target="_blank" title="profil: {{h.username(j.user_id)}}">{{h.username(j.user_id)}}</a>
 
-                    {% set val = h.sum(j.id) %}
-       
-                    
+                    {#% set val = h.sum(j.id) %#}
+                     {% set val =  h.fromUsers(j.id) %}
+                      {% snippet "snippets/modal_snippet.html", usernames=val['uIDs'], modal_id=j.id %}  
                         
 
 
-                    </h3><p class="date" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}> {{j.date}}<br /> <b style="color:#bd0a26; font-size:1.4em;">{{val['val']}}</b><b> {{_('User(s) liked this.')}}</b></p>
+                    </h3><p class="date" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}> {{j.date}}<br /> 
+
+        {% if val['val'] > 0 %}
+        <a style="color:#bd0a26; text-decor:none; cursor: pointer;" data-toggle="modal" data-target="#{{j.id}}"><b style="color:#bd0a26; font-size:1.4em;">{{val['val']}}</b></a>
+        {%else%}
+        <b style="color:#bd0a26; font-size:1.4em;">{{val['val']}}</b>
+        {%endif%}
+      <b> {{_('User(s) liked this.')}}</b> 
+                    
                      
                     <p class="comment_text" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}>
                         {%for text in j.comment_text.split('<br />') %}
@@ -234,7 +251,7 @@ function show_form(id){
                 </noscript>
             
                     {% if user != ''%}
-                        <form class="form-horizontal" method="post" action="/dataset/{{current_package_id}}/comments/new?parent_id={{i.id}}" hidden id="{{i.id}}">
+                        <form class="form-horizontal" method="post" action="/dataset/{{current_package_id}}/comments/new?parent_id={{i.id}}" hidden id="{{i.id}}_reply">
                           <div class="controls" style="margin-left:0px;">                     
                             <textarea id="textarea" name="comment_text" style="resize: vertical;width: 98%;" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"> {{ _('Reply') }}...</textarea>
                           </div>

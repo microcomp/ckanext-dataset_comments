@@ -94,34 +94,7 @@
                 {%endif%}
             <ul>
                 <!-- remove this -->
-        {#% for j in h.list_children(c.resource_id, i.id) %}
-                <div {% if j.pub != 'private' %}class="comments_2nd" {%else%}class="comments_2nd_priv" {%endif%}>
-                <div class="comment" id="comment_id">
-                    <h3 {% if j.pub == 'private' %}style="color:#858585;" {%endif%}><a href='/user/{{j.user_id}}' target="_blank" title="profil: {{h.username(j.user_id)}}">{{h.username(j.user_id)}}</a></h3><p class="date" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}> {{j.date}}</p>
-                     
-                    <p class="comment_text" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}>
-                        
-                        {%for text in j.comment_text.split('<br />') %}
-                            {{ text }}<br />
-                        {%endfor%}          
-                    <ul>
-                    {% if h.editor() %}
-                        {% if j.pub != 'private' %}
-                        <li><a href="/dataset/comments/delete?id={{j.id}}" class="delete" ><i class='fa fa-remove'></i> {{_('hide')}}</a></li>
-                        {%else%}
-                        <li><a href="/dataset/comments/delete?id={{j.id}}" class="delete" style="color:#858585;"><i class='fa fa-remove'></i> {{_('show')}}</a></li>
-                        {%endif%}
-                    {%else%}
-                    {%if c.userobj %}
-                        <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report inappropriate content')}}</a></li>
-                    {%endif%}
-                    {%endif%}
-                    <ul>
 
-                    </p>
-                </div>
-            </div>
-            {%endfor%#}
 
             
         </p>
@@ -134,7 +107,7 @@
 {% elif i.pub == 'public' or i.pub == 'reported'%}
 <script type="text/javascript">
 function show_form(id){
-    var form = document.getElementById(id)
+    var form = document.getElementById(id+'_reply');
     form.hidden = false;
 }
 
@@ -142,14 +115,18 @@ function show_form(id){
 <div class="comments_1st">
     <div class="comment" id="comment_id"  >
         <h3><a href='/user/{{i.user_id}}' target="_blank" title="profil: {{h.username(i.user_id)}}">{{h.username(i.user_id)}}</a> 
-{% set val = h.sum(i.id) %}
+{#% set val = h.sum(i.id) %#}
 
+{% set val =  h.fromUsers(i.id) %}
+{% snippet "snippets/modal_snippet.html", usernames=val['uIDs'], modal_id=i.id %}  
 
-
-          
-
-
-        </h3><p class="date"> {{i.date}}<br /> <b style="color:#bd0a26; font-size:1.4em;">{{val['val']}}</b><b> {{_('User(s) liked this.')}}</b></p>
+        </h3><p class="date"> {{i.date}}<br /> 
+        {% if val['val'] > 0 %}
+        <a style="color:#bd0a26; text-decor:none; cursor: pointer;" data-toggle="modal" data-target="#{{i.id}}"><b style="color:#bd0a26; font-size:1.4em;">{{val['val']}}</b></a>
+        {%else%}
+        <b style="color:#bd0a26; font-size:1.4em;">{{val['val']}}</b>
+        {%endif%}
+        <b> {{_('User(s) liked this.')}}</b></p>
 
         <p class="comment_text">
             {#{i.comment_text.replace('\\next', '<br />')}#}
@@ -168,14 +145,14 @@ function show_form(id){
                 <li><a href="/comments/report?id={{i.id}}" class="report" ><i class='fa fa-exclamation'></i> {{_('report inappropriate content')}}</a></li>
                 {%endif%}
                 {% if res['is'] == False %}
-            <li><a href='/dataset/like?dataset_id={{c.pkg.id}}&comment_id={{i.id}}'><i class="fa fa-thumbs-o-up"></i> {{_('Like this')}}</a></li>
+            <li><a href='/dataset/like?dataset_id={{c.resource["id"]}}&comment_id={{i.id}}'><i class="fa fa-thumbs-o-up"></i> {{_('Like this')}}</a></li>
            {%else%}
             {% if res['type'] == 'like' %}
                 {% set type = 'dislike' %}
             {%else%}
                 {% set type = 'like' %}     
             {%endif%}
-            <li><a href='/dataset/{{type}}?dataset_id={{c.pkg.id}}&comment_id={{i.id}}'>
+            <li><a href='/dataset/{{type}}?dataset_id={{c.resource["id"]}}&comment_id={{i.id}}'>
                 <i class="fa fa-thumbs-o-{% if type == 'like'%}up"></i> {{_('Like this')}}{%else%}down"></i> {{_('Dislike this')}}{%endif%}</a></li>
             {%endif%}
         {%endif%}
@@ -186,13 +163,20 @@ function show_form(id){
                 <div class="comment" id="comment_id">
                     <h3 {% if j.pub == 'private' %}style="color:#858585;" {%endif%}><a href='/user/{{j.user_id}}' target="_blank" title="profil: {{h.username(j.user_id)}}">{{h.username(j.user_id)}}</a>
 
-                    {% set val = h.sum(j.id) %}
-       
+                    {#% set val = h.sum(j.id) %#}
+                    {% set val =  h.fromUsers(j.id) %}
+                    {% snippet "snippets/modal_snippet.html", usernames=val['uIDs'], modal_id=j.id %}  
                     
                         
 
 
-                    </h3><p class="date" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}> {{j.date}}<br /> <b style="color:#bd0a26; font-size:1.4em;">{{val['val']}}</b><b> {{_('User(s) liked this.')}}</b></p>
+                    </h3><p class="date" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}> {{j.date}}<br /> 
+                    {% if val['val'] > 0 %}
+                    <a style="color:#bd0a26; text-decor:none; cursor: pointer;" data-toggle="modal" data-target="#{{j.id}}"><b style="color:#bd0a26; font-size:1.4em;">{{val['val']}}</b></a>
+                    {%else%}
+                    <b style="color:#bd0a26; font-size:1.4em;">{{val['val']}}</b>
+                    {%endif%}
+                    <b> {{_('User(s) liked this.')}}</b></p>
                      
                     <p class="comment_text" {% if j.pub == 'private' %}style="color:#858585;" {%endif%}>
                         {%for text in j.comment_text.split('<br />') %}
@@ -214,14 +198,14 @@ function show_form(id){
                     {%if c.userobj %}
                           {%set res = h.liked(c.userobj.id, j.id) %}
                           {% if res['is'] == False %}
-                            <li><a href='/dataset/like?dataset_id={{c.resource_id}}&comment_id={{j.id}}'><i class="fa fa-thumbs-o-up"></i> {{_('Like this')}}</a></li>
+                            <li><a href='/dataset/like?dataset_id={{c.resource["id"]}}&comment_id={{j.id}}'><i class="fa fa-thumbs-o-up"></i> {{_('Like this')}}</a></li>
                            {%else%}
                             {% if res['type'] == 'like' %}
                                 {% set type = 'dislike' %}
                             {%else%}
                                 {% set type = 'like' %}     
                             {%endif%}
-                            <li><a href='/dataset/{{type}}?dataset_id={{c.resource_id}}&comment_id={{j.id}}'>
+                            <li><a href='/dataset/{{type}}?dataset_id={{c.resource["id"]}}&comment_id={{j.id}}'>
                                 <i class="fa fa-thumbs-o-{% if type == 'like'%}up"></i> {{_('Like this')}}{%else%}down"></i> {{_('Dislike this')}}{%endif%}</a></li>
                             {%endif%}
                         {%endif%}
@@ -249,7 +233,7 @@ function show_form(id){
                 </noscript>
             
                     {% if c.userobj%}
-                        <form class="form-horizontal" method="post" action="/dataset/{{c.pkg.id}}/comments/new?parent_id={{i.id}}" hidden id="{{i.id}}">
+                        <form class="form-horizontal" method="post" action="/dataset/{{c.pkg.id}}/comments/new?parent_id={{i.id}}" hidden id="{{i.id}}_reply">
                           <div class="controls" style="margin-left:0px;">                     
                             <textarea id="textarea" name="comment_text" style="resize: vertical;width: 98%;" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"> {{ _('Reply') }}...</textarea>
                           </div>
