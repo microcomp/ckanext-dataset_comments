@@ -236,7 +236,7 @@ msgstr "Nahlásené"
 
 #: ckanext/dataset_comments/templates/comments/admin.html:117
 msgid "Public"
-msgstr "Verejné"
+msgstr "Verejný"
 
 #: ckanext/dataset_comments/templates/comments/admin.html:122
 #: ckanext/dataset_comments/templates/related/dashboard.html:396
