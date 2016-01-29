@@ -26,6 +26,7 @@ _get_or_bust = logic.get_or_bust
 
 _check_access = logic.check_access
 
+
 def _get_or_empty(dict, key):
     result = ""
     try:
@@ -86,6 +87,14 @@ def delCommentApi(context, data_dict=None):
     return   _("comment deleted")
 
 
+def is_valid_comment(comment_id):
+    if IsRes(comment_id):
+        return True
+    if IsApp(comment_id):
+        return True
+    if IsDataset(comment_id):
+        return True
+    return False
 
 
 def IsRes(id):
@@ -95,6 +104,14 @@ def IsRes(id):
     data_dict = {'related_id': id}
     resource = model.Session.query(model.Resource) \
                 .filter(model.Resource.id == id).first()
+    return resource != None
+def IsDataset(id):
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+
+    package = model.Session.query(model.Package) \
+                .filter(model.Package.id == id).first()
     return resource != None
 
 def IsApp(id):
@@ -108,11 +125,13 @@ def IsApp(id):
         return True
     return False
 
-def resource_url_helper(id):
+def resource_url_helper(_id):
     context = {'model': model, 'session': model.Session,
                'user': c.user or c.author, 'auth_user_obj': c.userobj,
                'for_view': True}
-    resource = model.Session.query(model.Resource).filter(model.Resource.id==id).first()
+    logging.warning("---------------------------ID ------------------------")
+    logging.warning(_id)
+    resource = model.Session.query(model.Resource).filter(model.Resource.id==_id).first()
     resource_group_id = resource.resource_group_id
     r2 = model.Session.query(model.ResourceGroup).filter(model.ResourceGroup.id == resource_group_id).first()
     return r2.package_id
@@ -637,7 +656,7 @@ def AdminCommentList():
 
     comments = get_all_comments(context, {'id':'*'})
     comments = sorted(comments, key=lambda comments: comments.date)
-
+    comments = [x for x in comments if is_valid_comment(x.dataset_id)]
     return comments
 
 def admin_or_moderator():
