@@ -63,7 +63,7 @@ msgstr "Systémový administrátori"
 
 #: ckanext/dataset_comments/templates/admin/base.html:9
 msgid "Config"
-msgstr "Configurácia"
+msgstr "Konfigurácia"
 
 #: ckanext/dataset_comments/templates/admin/base.html:10
 msgid "Comment Admin"
