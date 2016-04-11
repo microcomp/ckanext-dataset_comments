@@ -6,10 +6,8 @@
 {% set data = h.extra_v()['data'] %}
 {%endif%}
 
-
-
 {% block subtitle %}
-  {% if c.controller == 'ckanext.apps_and_ideas.apps:AppsController' %}
+  {% if c.controller == 'ckanext.applications.apps:AppsController' %}
     {{ _('Apps') }}
   {% else %}
     {{ _('Apps & Ideas') }}
@@ -17,9 +15,9 @@
 {% endblock %}
 
 {% block breadcrumb_content %}
-  {% if c.controller == 'ckanext.apps_and_ideas.apps:AppsController' %}
+  {% if c.controller == 'ckanext.applications.apps:AppsController' %}
     <li><a href='/apps'>{{ _('Applications') }}</a>  </li>
-  {% elif c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
+  {% elif c.controller == 'ckanext.applications.detail:DetailController' %}
     <li><a href='/apps'>{{ _('Applications') }}</a> / {{ c.title }}</li>
   {% else %}
     <li>{{ _('Apps & Ideas') }}</li>
@@ -29,50 +27,9 @@
 
 {% block primary_content %}
 {% if c.action == "new_app" %}
-{#
-
-FORM
-
-  #}
-
-    
+   
       <section class="module">
 <script>
-/*
-function match(x, array){
-  for(var i = 0; i < array.length; i++){
-    if(x == array[i]){
-      return true
-    }
-  }
-  return false
-}
-
-function validateForm() {
-    var title = document.forms["new_app_form"]["title"].value;
-    var url = document.forms["new_app_form"]["url"].value;
-    var dat = document.forms["new_app_form"]["datasets"].value;
-    var data_from_input = dat.split(',');
-    var new_array = []
-    for(var i = 0; i < data_from_input.length; i++){
-      if (match(data_from_input[i], datasets)){
-        new_array.push(data_from_input[i])
-      }
-    }
-    dat = new_array.join(',');
-    if (title==null || title==""||url==null || url=="") {
-        alert("All fields are required!");
-        return false;
-    }
-    if (dat == ""){
-      alert("pls add some existing datasets");
-      return false
-    }
-    
-}
-*/
-
-
 </script>
           <div class="module-content">
              <h1> New app </h1>
@@ -106,10 +63,6 @@ function validateForm() {
                 {%endfor%}
               </div>
               {%endif%}
-
-
-              
-              
               {% block fields %}
               {% if data %}
                 {{ form.input('title', label=_('Title'), id='field-title', placeholder=_('My Related Item'), value=data['title'], error="", classes=['control-full']) }}
@@ -140,33 +93,25 @@ function validateForm() {
           </div>
       </section>
    </div> 
- 
- {#
- 
-end of form
-
- #} 
 {% else %}
   <article class="module">
     <div class="module-content">
       <h1 class="page-heading">
         {% block page_heading %}
 
-            {% if c.controller == 'ckanext.apps_and_ideas.apps:AppsController' and h.check_access('app_create') %}
+            {% if c.controller == 'ckanext.applications.apps:AppsController' and h.check_access('app_create') %}
               {{ _('Applications') }} <a class="btn btn-primary" href="/apps/new" style="color:white;float:right;"><span class="fa fa-plus-square"></span> new app</a>
-            {% elif c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
+            {% elif c.controller == 'ckanext.applications.detail:DetailController' %}
               
             {% else %}
               {{ _('Apps & Ideas') }}
             {% endif %}
         {% endblock %}
       </h1>
-  {% if c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
+  {% if c.controller == 'ckanext.applications.detail:DetailController' %}
   {% else %}
 <style type="text/css">
 .btn-search{
-   
-  
   padding: 0.25em;
   color: white;
   background-color: #bd0a26;
@@ -194,17 +139,13 @@ margin-bottom: 1.5em;
               {%endif%}
               <label for="field-sitewide-search">Search Applications</label>
               <input id="field-sitewide-search" type="text" name="app_name" placeholder="{% if c.name == "" %}Search{%else%}{{c.name}}{%endif%}"  style="display:inline; width: 80%;"/>
-              
-              <!--a href='' class="btn-search" type="submit" onclick='submitForms'><i class="icon-search"></i></a-->
-              <button class="btn-search" type="submit" style="display:inline;">{{_('Search')}}</button>
-            <!--/div!-->
-            
+              <button class="btn-search" type="submit" style="display:inline;">{{_('Search')}}</button>       
     </form>
   {% endif %}
 
   {% block related_items %}
   
-      {% if c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
+      {% if c.controller == 'ckanext.applications.detail:DetailController' %}
         {# do nothing #}    
         
       {% else %}
@@ -213,63 +154,44 @@ margin-bottom: 1.5em;
   {% endblock %}
 
   {% block related_list %}
-    {% if c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
-
+    {% if c.controller == 'ckanext.applications.detail:DetailController' %}
           <form class="form-horizontal">
           <fieldset>
-
-          <!-- Form Name -->
           <legend>{{c.title}} </legend>
-
-          <!-- Text input-->
           <div class="control-group">
             <label class="control-label" for="textinput">{{_('Description')}}</label>
             <div class="controls">
-              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if c.description==''%}{{_('no data')}}{%else%}{{c.description}}{%endif%}</p><!--" readonly -->
+              <p style="padding-top: 0.3em;font-size:1.2em;">{% if c.description==''%}{{_('no data')}}{%else%}{{c.description}}{%endif%}</p>
             </div>
           </div> 
-
-          <!-- Text input-->
           <div class="control-group">
             <label class="control-label" for="textinput">{{_('Date of creation')}}</label>
             <div class="controls">
-              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if c.created==''%}{{_('no data')}}{%else%}{{c.created}}{%endif%}</p><!--" readonly-->
+              <p style="padding-top: 0.3em;font-size:1.2em;">{% if c.created==''%}{{_('no data')}}{%else%}{{c.created}}{%endif%}</p>
             </div>
           </div>
-
-          <!-- Text input-->
           <div class="control-group">
             <label class="control-label" for="textinput">{{_('Author')}}</label>
             <div class="controls">
-              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="--><p style="padding-top: 0.3em;font-size:1.2em;">{% if c.owner==''%}{{_('no data')}}{%else%}{{c.owner}}{%endif%}</p><!--" readonly -->
+              <p style="padding-top: 0.3em;font-size:1.2em;">{% if c.owner==''%}{{_('no data')}}{%else%}{{c.owner}}{%endif%}</p>
             </div>
           </div>
-
-          <!-- Text input-->
           <div class="control-group">
             <label class="control-label">{{_('URL')}}</label>
             <div class="controls" style="padding-top: 0.3em; font-size:1.2em;">
-              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% if c.url==''%}{{_('no data')}}{%else%}{{c.url}}{%endif%}" readonly-->
               <a href="{% if c.url==''%}#{%else%}{{c.url}}{%endif%}" style="padding-top: 1em;" target="_blank">{% if c.url==''%}{{_('no data')}}{%else%}{{c.url}}{%endif%}</a>
             </div>
           </div>
-
-          <!-- Text input-->
           <div class="control-group">
             <label class="control-label" for="textinput">{{_('Datasets')}}</label>
             <div class="controls" style="padding-top: 0.4em;font-size:1.2em;">
-              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="{% for x in c.datasets%} {{x}}, {% endfor %}" readonly-->
-              <!--ul style="padding-top: 0.3em; list-style-type:none;padding-left: -1em; "-->
-                {% for x in c.datasets%} <!--li style="display:inline; padding-right: 0.3em;"--> <a href="/dataset/{{x}}" target="_blank"> {{x}}</a>,<!--/li--> {% endfor %}
-              <!--/ul-->
+                {% for x in c.datasets%} <a href="/dataset/{{x}}" target="_blank"> {{x}}</a>, {% endfor %}
             </div>
           </div>
           <div class="control-group">
             <label class="control-label"> {{_('Status')}}</label>
             <div class="controls">
-              <!--input id="textinput" name="textinput" type="text" placeholder="placeholder" class="input-xlarge" value="-->
-
-              <p style="padding-top: 0.3em;font-size:1.2em;">{{ _(c.private) }}</p><!--" readonly -->
+              <p style="padding-top: 0.3em;font-size:1.2em;">{{ _(c.private) }}</p>
             </div>
           </div>
 
@@ -316,18 +238,14 @@ margin-bottom: 1.5em;
       <form>{%endif%}
       </noscript>
       <hr>
-      xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       {% snippet "related/snippets/comments2.html", data = [c.id, c.user, c.id, c.userobj.id] %}
-    
-
     {% else %}
       {{super()}}
     {%endif%}
   {% endblock %}
           </div>
-
   {% block page_pagination %}
-           {% if c.controller == 'ckanext.apps_and_ideas.detail:DetailController' %}
+           {% if c.controller == 'ckanext.applications.detail:DetailController' %}
 
            {% else %}
             {{ page.pager() }}
@@ -335,11 +253,9 @@ margin-bottom: 1.5em;
   {% endblock %}
         </article>
     {%endif%}
-
 {% endblock %}
-
 {% block secondary_content %}
-{%if c.controller == 'ckanext.apps_and_ideas.detail:DetailController'%}
+{%if c.controller == 'ckanext.applications.detail:DetailController'%}
     {%if c.img == ''%}
       {%else%}
       <aside class="secondary span3">
@@ -367,17 +283,9 @@ margin-bottom: 1.5em;
     <form action="/apps/search" method="get" class="module-content form-inline form-narrow section site-search simple-input">
 
 
-            <!--div class="search">
-              <label for="field-sitewide-search">Search Applications</label>
-              <input id="field-sitewide-search" type="text" name="app_name" placeholder="{% if c.name == "" %}Search{%else%}{{c.name}}{%endif%}" />
-              <button class="btn-search" type="submit"><i class="icon-search"></i></button>
-
-            </div-->
-
-
       <input type='hidden' name='page' value='1'/>
      <div class="control-group" >
-{% if c.controller == 'ckanext.apps_and_ideas.apps:AppsController' %}
+{% if c.controller == 'ckanext.applications.apps:AppsController' %}
       <div class="control-group" hidden>
 {%else %}
 <div class="control-group">
@@ -402,12 +310,6 @@ margin-bottom: 1.5em;
         </select>
       </div>
 
-      <!--div class="control-group">
-        <label for="field-featured" class="checkbox">
-          <input type="checkbox" id="field-featured" name="featured" {% if c.filters.get('featured') == 'on' %} checked="checked"{% endif %}></input>
-          {{ _('Only show featured items') }}
-        </label>
-      </div-->
       {% if h.is_admin() %}
       
       <input type="checkbox" id="field-private" name="private" {% if c.filters.get('private') == 'on' %} checked="checked"{% endif %}> {{ _('Only show private items') }}</input>

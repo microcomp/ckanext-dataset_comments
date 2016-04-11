@@ -3,7 +3,7 @@
   {{super()}}
 {% if h.admin_or_moderator() %}
 <li>
-	<a href="/admin"> {{_('Administration')}}</a>
+	<a href='{{h.url_for(controller="ckanext.dataset_comments.comments:CommentsController", action="AdminPage")}}'> {{_('Administration')}}</a>
 </li>
 {%endif%}
 {% endblock %}

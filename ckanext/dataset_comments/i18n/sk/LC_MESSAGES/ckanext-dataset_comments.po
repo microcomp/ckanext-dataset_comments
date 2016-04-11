@@ -12,8 +12,7 @@ msgstr ""
 "PO-Revision-Date: 2015-02-24 08:21+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: sk <LL@li.org>\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -64,7 +63,7 @@ msgstr "Systémový administrátori"
 
 #: ckanext/dataset_comments/templates/admin/base.html:9
 msgid "Config"
-msgstr "Configurácia"
+msgstr "Konfigurácia"
 
 #: ckanext/dataset_comments/templates/admin/base.html:10
 msgid "Comment Admin"
@@ -236,7 +235,7 @@ msgstr "Nahlásené"
 
 #: ckanext/dataset_comments/templates/comments/admin.html:117
 msgid "Public"
-msgstr "Verejné"
+msgstr "Verejný"
 
 #: ckanext/dataset_comments/templates/comments/admin.html:122
 #: ckanext/dataset_comments/templates/related/dashboard.html:396
@@ -329,7 +328,7 @@ msgstr "ukázať"
 #: ckanext/dataset_comments/templates/related/snippets/comments2.html:156
 #: ckanext/dataset_comments/templates/related/snippets/comments2.html:200
 msgid "User(s) liked this."
-msgstr "použivateľom sa to páči."
+msgstr "používateľom sa to páči."
 
 #: ckanext/dataset_comments/templates/package/resource_read.html:163
 #: ckanext/dataset_comments/templates/package/snippets/comments.html:148
@@ -467,7 +466,7 @@ msgstr "Uložiť"
 
 #: ckanext/dataset_comments/templates/related/dashboard.html:199
 msgid "Search"
-msgstr "Vyhľadávať"
+msgstr "Hľadať"
 
 #: ckanext/dataset_comments/templates/related/dashboard.html:228
 #: ckanext/dataset_comments/templates/related/dashboard.html:236

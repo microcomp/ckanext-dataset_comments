@@ -52,8 +52,9 @@
       		<h4 style="padding: 0px; margin: 0px;"> {{comment.date}}, {{_(comment.pub)}}, 
       			
       			{% if h.is_app(comment.dataset_id) %}
-      				<a href="/apps/detail?id={{comment.dataset_id}}"> {{h.app_n(comment.dataset_id)}} </a>
+      				<a href="{{h.url_for(controller='ckanext.applications.detail:DetailController', action='detail', id=comment.dataset_id)}}"> {{h.app_n(comment.dataset_id)}} </a>
       			{%elif  h.is_dataset(comment.dataset_id) and comment.dataset_id != 'import' %}
+            {#{h.url_for(controller='package', action='read', id=comment.dataset_id)}#}
       				<a href="/dataset/{{comment.dataset_id}}"> {{h.dataset_n(comment.dataset_id) }}</a>
             {%else%}
               <a href="/dataset/{{h.resource_url_helper(comment.dataset_id)}}/resource/{{comment.dataset_id}}"> {{h.resource_n(comment.dataset_id) }}</a>

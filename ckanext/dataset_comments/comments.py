@@ -22,10 +22,20 @@ import logging
 import ckan.logic
 import __builtin__
 import datetime
+_get_or_bust = logic.get_or_bust
 
 _check_access = logic.check_access
+
+
+def _get_or_empty(dict, key):
+    result = ""
+    try:
+        result = data_dict[key]
+    except KeyError:
+        result = ""
+    return result
 @toolkit.side_effect_free
-def NewCommentApi(context, data_dict=None):
+def newCommentApi(context, data_dict=None):
     ''' API function for new comments'''
 
     _check_access('app_create', context, data_dict)
@@ -34,16 +44,10 @@ def NewCommentApi(context, data_dict=None):
     import time
     date = int(time.time())    
     date = datetime.datetime.fromtimestamp(int(date)).strftime('%Y/%m/%d %H:%M:%S')
-    try:
-        text = data_dict['comment_text']
-    except KeyError:
-        ed = {'message': 'Comment too short'}
-        raise logic.ValidationError(ed)
-    try:
-        dataset_id = data_dict["dataset_id"]
-    except KeyError:
-        ed = {'message': 'Invalid dataset/application/resource id'}
-        raise logic.ValidationError(ed)
+
+    text = _get_or_bust(data_dict,"comment_text")
+    dataset_id =  _get_or_bust(data_dict,"dataset_id")
+
     pub = "private"
     user_id = context['auth_user_obj'].id
     text = " ".join(text.split(" "))
@@ -70,16 +74,12 @@ def NewCommentApi(context, data_dict=None):
     new_comment(context, data_dict2)
     model.Session.commit()
     
-    return { "text":  text, "result": "new comment added"}
+    return  _("new comment added")
 
 @toolkit.side_effect_free
-def DelCommentApi(context, data_dict=None):
+def delCommentApi(context, data_dict=None):
     '''delete/restore comment'''
-    try:
-        comment_id = data_dict['comment_id']
-    except KeyError:
-        ed = {'message': 'Comment not found'}
-        raise logic.ValidationError(ed)
+    comment_id = _get_or_bust(data_dict, 'comment_id')
 
     _check_access('commets_admin', context, data_dict)
     data_dict2 = {'id':comment_id}
@@ -87,6 +87,14 @@ def DelCommentApi(context, data_dict=None):
     return   _("comment deleted")
 
 
+def is_valid_comment(comment_id):
+    if IsRes(comment_id):
+        return True
+    if IsApp(comment_id):
+        return True
+    if IsDataset(comment_id):
+        return True
+    return False
 
 
 def IsRes(id):
@@ -96,6 +104,14 @@ def IsRes(id):
     data_dict = {'related_id': id}
     resource = model.Session.query(model.Resource) \
                 .filter(model.Resource.id == id).first()
+    return resource != None
+def IsDataset(id):
+    context = {'model': model, 'session': model.Session,
+               'user': c.user or c.author, 'auth_user_obj': c.userobj,
+               'for_view': True}
+
+    package = model.Session.query(model.Package) \
+                .filter(model.Package.id == id).first()
     return resource != None
 
 def IsApp(id):
@@ -109,11 +125,13 @@ def IsApp(id):
         return True
     return False
 
-def resource_url_helper(id):
+def resource_url_helper(_id):
     context = {'model': model, 'session': model.Session,
                'user': c.user or c.author, 'auth_user_obj': c.userobj,
                'for_view': True}
-    resource = model.Session.query(model.Resource).filter(model.Resource.id==id).first()
+    logging.warning("---------------------------ID ------------------------")
+    logging.warning(_id)
+    resource = model.Session.query(model.Resource).filter(model.Resource.id==_id).first()
     resource_group_id = resource.resource_group_id
     r2 = model.Session.query(model.ResourceGroup).filter(model.ResourceGroup.id == resource_group_id).first()
     return r2.package_id
@@ -282,7 +300,7 @@ class CommentsController(base.BaseController):
         dataset_id = get_comments(context, data_dict)[0].dataset_id
 
         if IsApp(dataset_id):
-            return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
+            return h.redirect_to(controller='ckanext.applications.detail:DetailController', action='detail', id=dataset_id)
         else:
             if IsRes(dataset_id):
 
@@ -512,7 +530,7 @@ class CommentsController(base.BaseController):
         text = "<br />".join(text2)
 
         if len(text) < 5:
-            base.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id, error='too_short')
+            base.redirect_to(controller='ckanext.applications.detail:DetailController', action='detail', id=dataset_id, error='too_short')
         parent = base.request.params.get('parent_id','') 
 
         if parent == "":
@@ -526,8 +544,7 @@ class CommentsController(base.BaseController):
         logging.warning(c.post_data)
         new_comment(context, data_dict)
         model.Session.commit()
-
-        return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
+        return h.redirect_to(controller='ckanext.applications.detail:DetailController', action='detail', id=dataset_id)
 
     def DeleteComment(self):
         context = {'model': model, 'session': model.Session,
@@ -564,7 +581,7 @@ class CommentsController(base.BaseController):
             logging.warning('NotAuthorized')
         
         dataset_id = get_comments(context, data_dict)[0].dataset_id
-        return h.redirect_to(controller='ckanext.apps_and_ideas.detail:DetailController', action='detail', id=dataset_id)
+        return h.redirect_to(controller='ckanext.applications.detail:DetailController', action='detail', id=dataset_id)
 
    
 
@@ -598,7 +615,9 @@ def GetUsername(user_id):
                 .filter(model.User.id == user_id).first()
     if username == None:
         return user_id
-    return username.name
+    if username.fullname == "":
+        return username.name
+    return username.fullname
 def ListChildren(id, comment_id):
     context = {'model': model, 'session': model.Session,
                'user': c.user or c.author, 'auth_user_obj': c.userobj,
@@ -637,7 +656,7 @@ def AdminCommentList():
 
     comments = get_all_comments(context, {'id':'*'})
     comments = sorted(comments, key=lambda comments: comments.date)
-
+    comments = [x for x in comments if is_valid_comment(x.dataset_id)]
     return comments
 
 def admin_or_moderator():
