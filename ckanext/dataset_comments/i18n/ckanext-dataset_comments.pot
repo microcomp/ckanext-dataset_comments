@@ -105,7 +105,7 @@ msgid "The available administrative tools are:"
 msgstr ""
 
 #: ckanext/dataset_comments/templates/admin/pages.html:28
-msgid "Comments administration"
+msgid "Comment Administration"
 msgstr ""
 
 #: ckanext/dataset_comments/templates/admin/pages.html:29
@@ -118,6 +118,9 @@ msgstr ""
 
 #: ckanext/dataset_comments/templates/admin/pages.html:31
 msgid "Storage Administration"
+msgstr ""
+
+msgid "Notifications Administration"
 msgstr ""
 
 #: ckanext/dataset_comments/templates/admin/pages.html:53

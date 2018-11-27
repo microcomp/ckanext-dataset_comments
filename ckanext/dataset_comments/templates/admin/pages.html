@@ -11,7 +11,7 @@
 
     {%endif%}
 		<li class="active">
-			<a href="/admin"> Administration</a>
+			<a href="/admin">{{ _('Administration') }}</a>
 		</li>
     
 	</ul>
@@ -20,7 +20,7 @@
   <p> {{_('According to your permissions assigned to your user account, you are allowed to use certain administrative tools. This tools provide extended functionality for managing content of CKAN.')}} </p>
   <p>{{_('The available administrative tools are:')}}</p>
   <ul style="list-style-type:none;">
-    <li>{% if h.comment_admin() %}<h2 style="font-size: 1.3em;"> <a href="{{h.url_for(controller='ckanext.dataset_comments.comments:CommentsController', action='AdminList')}}"> <i class="fa fa-external-link" ></i> {{_('Comments administration')}} </a></h2>{%endif%}</li> 
+    <li>{% if h.comment_admin() %}<h2 style="font-size: 1.3em;"> <a href="{{h.url_for(controller='ckanext.dataset_comments.comments:CommentsController', action='AdminList')}}"> <i class="fa fa-external-link" ></i> {{_('Comment Administration')}} </a></h2>{%endif%}</li> 
     <li>{% if h.tag_admin() %}<h2 style="font-size: 1.3em;"><a href="{{h.url_for(controller='ckanext.tags.tags:TagsController', action='admin_list')}}"> <i class="fa fa-external-link" ></i> {{_('Tags administration')}} </a></h2>{%endif%}</li>
     <li>{% if h.report_admin() %}<h2 style="font-size: 1.3em;"> <a href="{{h.url_for(controller='ckanext.applications.apps:AppsController', action='list_reports')}}"><i class="fa fa-external-link" ></i>  {{_('Reported applications')}}</a></h2>  {%endif%}</li>
     <li>{% if h.storage_admin() %}<h2 style="font-size: 1.3em;"> <a href="{{h.url_for(controller='ckanext.storage_gui.storageGUI:StorageController', action='list')}}"><i class="fa fa-external-link" ></i> {{_('Storage Administration')}} </a></h2>  {%endif%}</li>
